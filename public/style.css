@@ -20,6 +20,8 @@
   --on-fill: #001417;    /* texto sobre o ciano */
   --accent: #12d6ea;     /* ciano como texto/linha */
   --accent-soft: rgba(18, 214, 234, .10);
+  --rib: 0, 110, 125;      /* cor das faixas do fundo (RGB) */
+  --rib-hi: 18, 214, 234;  /* brilho das faixas (RGB) */
 
   --up: #3ddc97;
   --down: #ff6b6b;
@@ -37,6 +39,8 @@
   --muted: #55646a;
   --accent: #00717f;
   --accent-soft: rgba(0, 113, 127, .08);
+  --rib: 0, 140, 160;
+  --rib-hi: 0, 150, 170;
   --up: #11704a;
   --down: #b4322a;
   --watch: #55646a;
@@ -217,3 +221,17 @@ h3 a:hover { text-decoration: underline; text-decoration-color: var(--accent); t
 .pl .dia { font: 700 .9rem var(--font-display); color: var(--accent); margin-right: 8px; }
 .pl .th2 { margin: 6px 0 2px; font-weight: 600; }
 .ck { margin: 0 0 8px; padding-left: 20px; font-size: .92rem; max-width: 70ch; } .ck li + li { margin-top: 4px; }
+
+/* ---------- marca: verde (padrão, como na arte do Ável Future) ou ciano ----------
+   Para voltar ao ciano, troque data-brand="verde" por data-brand="ciano" no <html> do index.html. */
+:root[data-brand="verde"] { --fill: #2fd68a; --on-fill: #00180d; --accent: #2fd68a; --accent-soft: rgba(47, 214, 138, .10); --rib: 0, 96, 52; --rib-hi: 47, 214, 138; }
+:root[data-brand="verde"][data-theme="light"] { --accent: #0a7a47; --accent-soft: rgba(10, 122, 71, .08); --rib: 0, 130, 75; --rib-hi: 10, 140, 80; }
+
+/* ---------- plano de fundo: faixas verticais em degradê, mais fortes nos cantos (só CSS, sem imagem) ---------- */
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9px, rgba(var(--rib), .60) 22px, transparent 39px, transparent 43px, rgba(var(--rib-hi), .12) 49px, transparent 61px),
+    repeating-linear-gradient(90deg, rgba(var(--rib), .40) 0 15px, transparent 34px 63px, rgba(var(--rib), .55) 82px, transparent 99px 134px);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 0% 100%, #000 0%, transparent 100%), radial-gradient(ellipse 65% 60% at 100% 0%, #000 0%, transparent 100%), linear-gradient(rgba(0, 0, 0, .28), rgba(0, 0, 0, .28));
+  mask-image: radial-gradient(ellipse 75% 65% at 0% 100%, #000 0%, transparent 100%), radial-gradient(ellipse 65% 60% at 100% 0%, #000 0%, transparent 100%), linear-gradient(rgba(0, 0, 0, .28), rgba(0, 0, 0, .28)); }
+:root[data-theme="light"] body::before { opacity: .45; }

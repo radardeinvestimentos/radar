@@ -1,6 +1,6 @@
 {
   "_comment": "Lista de documentos para resumir. status: pendente (aguardando o PDF/link) ou pronto (resumo e 'o que muda para o cliente' preenchidos). Para atualizar, edite este arquivo no GitHub.",
-  "revisadoEm": "2026-10-17",
+  "revisadoEm": "2026-10-18",
   "pergunta": "O que muda para o meu cliente?",
   "roteiro": [
     "Renda fixa: pós-fixados, prefixados e IPCA+ ficam mais ou menos atraentes? Há risco de marcação a mercado?",
@@ -13,20 +13,24 @@
     {
       "id": "ata-copom-recente",
       "tipo": "Ata do Copom",
-      "titulo": "Ata do Copom (reunião mais recente)",
+      "titulo": "Ata da 281ª reunião do Copom (15 e 16/09/2026)",
       "link": "https://www.bcb.gov.br/publicacoes/atascopom",
       "linkRotulo": "Página oficial das atas",
-      "status": "pendente",
-      "nota": "Mande o PDF ou o link e eu preencho o resumo e o 'o que muda para o cliente'."
+      "status": "pronto",
+      "nota": "Resumo feito a partir do PDF da ata. O dado de câmbio e de projeção é o do cenário de referência do Copom, não uma previsão de mercado. Leia o original antes de usar números em material para o cliente.",
+      "resumo": "O Copom reduziu a Selic para 13,75% a.a., por unanimidade (7 votos), mas manteve tom duro. Diz que as expectativas de inflação estão desancoradas (Focus em 4,9% para 2026 e 4,3% para 2027, acima da meta de 3%) e que isso exige \"restrição monetária maior e por mais tempo\". A projeção do Copom para o horizonte relevante (1º tri de 2028) é de 3,2%, com 5,2% em 2026 e 3,9% em 2027. Os riscos para a inflação têm assimetria altista: expectativas longas, serviços resilientes, câmbio depreciado (referência de R$ 5,15) e estímulos ao consumo. A atividade desacelera (PIB do 2º tri mais fraco), o crédito livre de longo prazo recua, e o crédito direcionado continua crescendo. O Comitê também alerta que o esmorecimento das reformas e da disciplina fiscal, o crédito direcionado e as dúvidas sobre a dívida pública podem elevar a taxa de juros neutra e reduzir a força da política monetária. A magnitude do ciclo de queda dependerá dos dados.",
+      "muda": "Mensagem central para o cliente: os juros estão caindo, mas devagar e com cautela, e isso não é um sinal de \"juro baixo logo\". Para renda fixa, isso mantém os pós-fixados (CDI) atraentes e torna o prefixado e o IPCA+ longos mais sensíveis a mudanças na expectativa (marcação a mercado). Para renda variável e FIIs, a queda gradual ajuda o custo de oportunidade, mas o risco fiscal e a inflação alta limitam o espaço. Perguntas úteis para a conversa: quem aplicou em prefixado esperando queda forte de juros, e quem tem liquidez parada que merece revisão? Conversa com o cliente, não recomendação de produto."
     },
     {
       "id": "rpm-recente",
       "tipo": "Relatório do Banco Central",
-      "titulo": "Relatório de Política Monetária, antigo Relatório de Inflação (edição mais recente)",
+      "titulo": "Relatório de Política Monetária, setembro de 2026 (antigo Relatório de Inflação)",
       "link": "https://www.bcb.gov.br/publicacoes/rpm",
       "linkRotulo": "Página oficial do relatório",
-      "status": "pendente",
-      "nota": "Confirme o nome atual da publicação na página oficial."
+      "status": "pronto",
+      "nota": "Resumo feito a partir do PDF (90 páginas), com base no sumário executivo, nas projeções e no balanço de riscos. Não substitui a leitura dos boxes de interesse.",
+      "resumo": "O relatório confirma o nome atual da publicação (até 2024 era Relatório de Inflação). Ponto principal: o IPCA em 12 meses caiu de 4,72% (maio) para 4,22% (agosto), mas deve voltar a subir no fim do ano, para 5,2% no 4º tri de 2026, e ficar dois trimestres acima do teto de 4,5% da meta. A probabilidade estimada de estourar o teto no 4º tri de 2026 subiu de 79% para 90%. A projeção para o horizonte relevante (1º tri de 2028) ficou estável em 3,2%, e a inflação deve voltar a 3,1% em 2029. O PIB do 2º tri cresceu 0,5% (1,1% no 1º), com consumo das famílias em queda, e a projeção de 2026 foi revisada de 2,0% para 1,8% (2027: 1,4%). O mercado de trabalho segue aquecido, a inflação de serviços segue alta e o hiato do produto é positivo. As expectativas de inflação recuaram para 2026, mas subiram para 2027 e 2028. Há boxes sobre efeitos de petróleo na inflação, El Niño e La Niña, crédito e contas externas.",
+      "muda": "Mensagem para o cliente: a inflação de 2026 tende a fechar acima do teto, mesmo com a Selic em queda, e a economia desacelera sem perder o emprego. Para renda fixa, reforça o valor de IPCA+ para quem quer proteção de poder de compra, com atenção a prazo e marcação a mercado. Para o caixa, o CDI ainda rende bem acima da inflação. Para ações, desaceleração de consumo pesa em varejo e setores sensíveis a juros; setores defensivos e exportadores têm outra dinâmica. Pergunta para abrir a conversa: a carteira do cliente foi pensada para um cenário de inflação perto de 5% e juros caindo devagar? É um ponto de partida de conversa, não uma recomendação."
     },
     {
       "id": "cartas-gestoras",
