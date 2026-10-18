@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#000000">
+<title>Radar do Assessor</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Cpath d='M5 21l6-7 5 4 10-11' fill='none' stroke='%2312d6ea' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/sora-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>try{var t=localStorage.getItem('radar.theme');if(t==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#001417" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l5-6 4 3.5L21 5"/></svg></span>
+      <div>
+        <h1>Radar do Assessor</h1>
+        <p class="status" aria-live="polite"><span id="pulse" class="pulse" aria-hidden="true"></span><span id="statusText">Carregando…</span></p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="theme" class="btn" type="button" aria-label="Alternar tema claro e escuro">Tema claro</button>
+      <button id="refresh" class="btn primary" type="button">Atualizar</button>
+    </div>
+  </div>
+  <nav class="wrap tabs sections" id="sections" role="tablist" aria-label="Seções"></nav>
+  <div class="wrap controls" id="controls">
+    <label class="field"><span>Período</span>
+      <select id="period">
+        <option value="today">Hoje</option>
+        <option value="24">Últimas 24h</option>
+        <option value="48">Últimas 48h</option>
+        <option value="72">Últimas 72h</option>
+      </select>
+    </label>
+    <label class="field"><span>Origem</span>
+      <select id="region">
+        <option value="">Brasil e internacional</option>
+        <option value="BR">Só Brasil</option>
+        <option value="INT">Só internacional</option>
+      </select>
+    </label>
+    <label class="field"><span>Portal</span>
+      <select id="source"><option value="">Todos</option></select>
+    </label>
+    <label class="field grow"><span>Buscar</span>
+      <input id="q" type="search" placeholder="Selic, Petrobras, FIIs, tarifa" autocomplete="off">
+    </label>
+  </div>
+  <nav class="wrap tabs topics" id="tabs" role="tablist" aria-label="Tópicos"></nav>
+</header>
+
+<main class="wrap" id="main" tabindex="-1">
+  <div id="list" class="list" role="tabpanel"></div>
+</main>
+
+<footer class="wrap foot">
+  <details id="health"><summary>Saúde das fontes</summary><div id="healthBody"></div></details>
+  <details id="api"><summary>Usar como API (JSON)</summary><div id="apiBody"></div></details>
+  <p class="disclaimer" id="disclaimer"></p>
+  <p id="actionsLink" class="small"></p>
+</footer>
+
+<script src="match.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>
