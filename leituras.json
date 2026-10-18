@@ -1,0 +1,164 @@
+{
+  "_comment": "Lista de documentos para resumir. status: pendente (aguardando o PDF/link) ou pronto (resumo e 'o que muda para o cliente' preenchidos). Para atualizar, edite este arquivo no GitHub.",
+  "revisadoEm": "2026-10-17",
+  "pergunta": "O que muda para o meu cliente?",
+  "roteiro": [
+    "Renda fixa: pós-fixados, prefixados e IPCA+ ficam mais ou menos atraentes? Há risco de marcação a mercado?",
+    "Renda variável e FIIs: algum setor ganha ou perde? Mudou o custo de oportunidade?",
+    "Câmbio e internacional: o dólar e os juros lá fora entram na conversa?",
+    "Crédito e liquidez: há alerta sobre emissores, setores ou prazos?",
+    "Conversa: qual é a primeira frase que eu diria ao cliente sobre isso?"
+  ],
+  "documentos": [
+    {
+      "id": "ata-copom-recente",
+      "tipo": "Ata do Copom",
+      "titulo": "Ata do Copom (reunião mais recente)",
+      "link": "https://www.bcb.gov.br/publicacoes/atascopom",
+      "linkRotulo": "Página oficial das atas",
+      "status": "pendente",
+      "nota": "Mande o PDF ou o link e eu preencho o resumo e o 'o que muda para o cliente'."
+    },
+    {
+      "id": "rpm-recente",
+      "tipo": "Relatório do Banco Central",
+      "titulo": "Relatório de Política Monetária, antigo Relatório de Inflação (edição mais recente)",
+      "link": "https://www.bcb.gov.br/publicacoes/rpm",
+      "linkRotulo": "Página oficial do relatório",
+      "status": "pendente",
+      "nota": "Confirme o nome atual da publicação na página oficial."
+    },
+    {
+      "id": "cartas-gestoras",
+      "tipo": "Carta de gestora",
+      "titulo": "Cartas mensais das gestoras que você acompanha",
+      "link": "",
+      "linkRotulo": "",
+      "status": "pendente",
+      "nota": "Me diga quais gestoras acompanha e mande as cartas mais recentes."
+    }
+  ],
+  "gestoras": [
+    {
+      "nome": "Verde Asset",
+      "foco": "Multimercado macro",
+      "busca": "https://www.google.com/search?q=carta+mensal+Verde+Asset+gestora"
+    },
+    {
+      "nome": "SPX Capital",
+      "foco": "Multimercado e crédito",
+      "busca": "https://www.google.com/search?q=carta+mensal+SPX+Capital+gestora"
+    },
+    {
+      "nome": "Kapitalo",
+      "foco": "Multimercado macro",
+      "busca": "https://www.google.com/search?q=carta+mensal+Kapitalo+gestora"
+    },
+    {
+      "nome": "Ibiuna",
+      "foco": "Multimercado macro",
+      "busca": "https://www.google.com/search?q=carta+mensal+Ibiuna+gestora"
+    },
+    {
+      "nome": "Legacy Capital",
+      "foco": "Multimercado",
+      "busca": "https://www.google.com/search?q=carta+mensal+Legacy+Capital+gestora"
+    },
+    {
+      "nome": "Absolute Investimentos",
+      "foco": "Multimercado e ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Absolute+Investimentos+gestora"
+    },
+    {
+      "nome": "Kinea (Itaú)",
+      "foco": "Multimercado, FIIs e crédito",
+      "busca": "https://www.google.com/search?q=carta+mensal+Kinea+%28Ita%C3%BA%29+gestora"
+    },
+    {
+      "nome": "Dynamo",
+      "foco": "Ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Dynamo+gestora"
+    },
+    {
+      "nome": "Trígono Capital",
+      "foco": "Ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Tr%C3%ADgono+Capital+gestora"
+    },
+    {
+      "nome": "Squadra",
+      "foco": "Ações long & short",
+      "busca": "https://www.google.com/search?q=carta+mensal+Squadra+gestora"
+    },
+    {
+      "nome": "Atmos Capital",
+      "foco": "Ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Atmos+Capital+gestora"
+    },
+    {
+      "nome": "Tarpon",
+      "foco": "Ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Tarpon+gestora"
+    },
+    {
+      "nome": "Constellation",
+      "foco": "Ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Constellation+gestora"
+    },
+    {
+      "nome": "Vinci Partners",
+      "foco": "Ações, crédito e FIIs",
+      "busca": "https://www.google.com/search?q=carta+mensal+Vinci+Partners+gestora"
+    },
+    {
+      "nome": "Genoa Capital",
+      "foco": "Multimercado",
+      "busca": "https://www.google.com/search?q=carta+mensal+Genoa+Capital+gestora"
+    },
+    {
+      "nome": "Adam Capital",
+      "foco": "Multimercado",
+      "busca": "https://www.google.com/search?q=carta+mensal+Adam+Capital+gestora"
+    },
+    {
+      "nome": "JGP",
+      "foco": "Multimercado e crédito",
+      "busca": "https://www.google.com/search?q=carta+mensal+JGP+gestora"
+    },
+    {
+      "nome": "Opportunity",
+      "foco": "Multimercado e ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Opportunity+gestora"
+    },
+    {
+      "nome": "Bahia Asset",
+      "foco": "Ações",
+      "busca": "https://www.google.com/search?q=carta+mensal+Bahia+Asset+gestora"
+    },
+    {
+      "nome": "XP Asset",
+      "foco": "Multimercado e crédito",
+      "busca": "https://www.google.com/search?q=carta+mensal+XP+Asset+gestora"
+    },
+    {
+      "nome": "Capitânia",
+      "foco": "Crédito e FIIs",
+      "busca": "https://www.google.com/search?q=carta+mensal+Capit%C3%A2nia+gestora"
+    },
+    {
+      "nome": "RBR Asset",
+      "foco": "FIIs e crédito",
+      "busca": "https://www.google.com/search?q=carta+mensal+RBR+Asset+gestora"
+    },
+    {
+      "nome": "Rio Bravo",
+      "foco": "FIIs",
+      "busca": "https://www.google.com/search?q=carta+mensal+Rio+Bravo+gestora"
+    },
+    {
+      "nome": "Patria",
+      "foco": "Alternativos e infraestrutura",
+      "busca": "https://www.google.com/search?q=carta+mensal+Patria+gestora"
+    }
+  ],
+  "gestorasNota": "Lista inicial de gestoras conhecidas, sem juízo de qualidade e sem recomendação. O link abre uma busca pela carta mais recente (não leva direto ao documento). Para acompanhar uma carta de verdade, mande o PDF ou o link que eu preencho o resumo e o 'o que muda para o meu cliente'. Edite esta lista no GitHub."
+}

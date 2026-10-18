@@ -1,0 +1,95 @@
+{
+  "_comment": "feeds = todas as URLs são lidas e mescladas. fallback = só é usado se nenhuma URL de feeds retornar itens. kind: rss (padrão) | html | gnews. Para desativar um portal use enabled:false.",
+  "sources": [
+    {
+      "id": "infomoney", "name": "InfoMoney", "region": "BR", "lang": "pt", "weight": 1,
+      "feeds": [{ "url": "https://www.infomoney.com.br/feed/" }]
+    },
+    {
+      "id": "seudinheiro", "name": "Seu Dinheiro", "region": "BR", "lang": "pt", "weight": 0.9,
+      "feeds": [{ "url": "https://www.seudinheiro.com/feed/" }]
+    },
+    {
+      "id": "moneytimes", "name": "Money Times", "region": "BR", "lang": "pt", "weight": 0.9,
+      "feeds": [{ "url": "https://www.moneytimes.com.br/feed/" }]
+    },
+    {
+      "id": "exame", "name": "Exame", "region": "BR", "lang": "pt", "weight": 0.9, "assumeTz": "-03:00",
+      "feeds": [{ "url": "https://exame.com/feed/" }]
+    },
+    {
+      "id": "valor", "name": "Valor Econômico", "region": "BR", "lang": "pt", "weight": 1, "paywall": true,
+      "note": "Bloqueado no ambiente de teste; confirme na primeira execução. Se o RSS não responder, usa Google News (só manchetes).",
+      "feeds": [
+        { "url": "https://pox.globo.com/rss/valor" },
+        { "url": "https://pox.globo.com/rss/valor/financas/" }
+      ],
+      "fallback": [
+        { "kind": "gnews", "url": "https://news.google.com/rss/search?q=site:valor.globo.com+when:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419" }
+      ]
+    },
+    {
+      "id": "cnnbrasil", "name": "CNN Brasil (Economia)", "region": "BR", "lang": "pt", "weight": 0.8, "assumeTz": "-03:00",
+      "feeds": [{ "url": "https://www.cnnbrasil.com.br/economia/feed/" }],
+      "fallback": [
+        { "kind": "html", "url": "https://www.cnnbrasil.com.br/economia/", "hrefPattern": "^https://www\\.cnnbrasil\\.com\\.br/(economia|blogs)/", "minDepth": 3 }
+      ]
+    },
+    {
+      "id": "arevista", "name": "A Revista", "region": "BR", "lang": "pt", "weight": 0.7, "enabled": false,
+      "note": "Desativado: arevista.com.br redireciona para outro site. Informe a URL oficial do feed (ou do portal), coloque em feeds e mude enabled para true.",
+      "feeds": []
+    },
+    {
+      "id": "suno", "name": "Suno Notícias", "region": "BR", "lang": "pt", "weight": 0.8,
+      "feeds": [{ "url": "https://www.suno.com.br/noticias/feed/" }]
+    },
+    {
+      "id": "bloomberg", "name": "Bloomberg", "region": "INT", "lang": "en", "weight": 1, "paywall": true,
+      "note": "robots.txt bloqueou a leitura no ambiente de teste; os feeds RSS são públicos, mas confirme na primeira execução.",
+      "feeds": [
+        { "url": "https://feeds.bloomberg.com/markets/news.rss" },
+        { "url": "https://feeds.bloomberg.com/economics/news.rss" },
+        { "url": "https://feeds.bloomberg.com/politics/news.rss" }
+      ],
+      "fallback": [
+        { "kind": "gnews", "url": "https://news.google.com/rss/search?q=site:bloomberg.com+(markets+OR+economy)+when:1d&hl=en-US&gl=US&ceid=US:en" }
+      ]
+    },
+    {
+      "id": "reuters", "name": "Reuters", "region": "INT", "lang": "en", "weight": 1,
+      "note": "A Reuters encerrou o RSS público. Usa Google News (só manchetes e link).",
+      "feeds": [],
+      "fallback": [
+        { "kind": "gnews", "url": "https://news.google.com/rss/search?q=site:reuters.com+(markets+OR+economy+OR+business)+when:1d&hl=en-US&gl=US&ceid=US:en" }
+      ]
+    },
+    {
+      "id": "ft", "name": "Financial Times", "region": "INT", "lang": "en", "weight": 1, "paywall": true,
+      "feeds": [{ "url": "https://www.ft.com/rss/home" }],
+      "fallback": [
+        { "kind": "gnews", "url": "https://news.google.com/rss/search?q=site:ft.com+when:1d&hl=en-US&gl=US&ceid=US:en" }
+      ]
+    },
+    {
+      "id": "wsj", "name": "The Wall Street Journal", "region": "INT", "lang": "en", "weight": 1, "paywall": true,
+      "feeds": [
+        { "url": "https://feeds.a.dowjones.com/rss/RSSMarketsMain" },
+        { "url": "https://feeds.a.dowjones.com/rss/RSSWorldNews" }
+      ],
+      "fallback": [
+        { "kind": "gnews", "url": "https://news.google.com/rss/search?q=site:wsj.com+(markets+OR+economy)+when:1d&hl=en-US&gl=US&ceid=US:en" }
+      ]
+    },
+    {
+      "id": "cnbc", "name": "CNBC", "region": "INT", "lang": "en", "weight": 0.9,
+      "feeds": [
+        { "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664" },
+        { "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258" }
+      ],
+      "fallback": [
+        { "kind": "gnews", "url": "https://news.google.com/rss/search?q=site:cnbc.com+(markets+OR+economy)+when:1d&hl=en-US&gl=US&ceid=US:en" }
+      ]
+    }
+  ]
+}

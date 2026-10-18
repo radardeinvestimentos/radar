@@ -1,0 +1,12 @@
+{
+  "name": "radar-do-assessor",
+  "version": "1.0.0",
+  "description": "Agregador gratuito de notícias financeiras com tópicos e análise de impacto para assessores de investimentos",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "collect": "node src/collect.js",
+    "test": "node --test --test-timeout=60000 test/radar.test.js test/tools.test.js test/ativos.test.js"
+  }
+}
