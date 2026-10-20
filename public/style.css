@@ -227,11 +227,47 @@ h3 a:hover { text-decoration: underline; text-decoration-color: var(--accent); t
 :root[data-brand="verde"] { --fill: #2fd68a; --on-fill: #00180d; --accent: #2fd68a; --accent-soft: rgba(47, 214, 138, .10); --rib: 0, 96, 52; --rib-hi: 47, 214, 138; }
 :root[data-brand="verde"][data-theme="light"] { --accent: #0a7a47; --accent-soft: rgba(10, 122, 71, .08); --rib: 0, 130, 75; --rib-hi: 10, 140, 80; }
 
-/* ---------- plano de fundo: faixas verticais em degradê, mais fortes nos cantos (só CSS, sem imagem) ---------- */
-body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    repeating-linear-gradient(90deg, transparent 0 9px, rgba(var(--rib), .60) 22px, transparent 39px, transparent 43px, rgba(var(--rib-hi), .12) 49px, transparent 61px),
-    repeating-linear-gradient(90deg, rgba(var(--rib), .40) 0 15px, transparent 34px 63px, rgba(var(--rib), .55) 82px, transparent 99px 134px);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 0% 100%, #000 0%, transparent 100%), radial-gradient(ellipse 65% 60% at 100% 0%, #000 0%, transparent 100%), linear-gradient(rgba(0, 0, 0, .28), rgba(0, 0, 0, .28));
-  mask-image: radial-gradient(ellipse 75% 65% at 0% 100%, #000 0%, transparent 100%), radial-gradient(ellipse 65% 60% at 100% 0%, #000 0%, transparent 100%), linear-gradient(rgba(0, 0, 0, .28), rgba(0, 0, 0, .28)); }
-:root[data-theme="light"] body::before { opacity: .45; }
+/* ---------- plano de fundo: linhas e ondas suaves, bem transparentes (SVG no index.html) ----------
+   Para trocar de estilo, mude data-fundo no <html> do index.html: "misto" (névoa no escuro, brisa no claro), "brisa", "ondas" ou "nevoa". */
+.bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.bg .f { display: none; }
+:root[data-fundo="brisa"] .bg .f-brisa, :root[data-fundo="ondas"] .bg .f-ondas, :root[data-fundo="nevoa"] .bg .f-nevoa,
+:root[data-fundo="misto"][data-theme="dark"] .bg .f-nevoa, :root[data-fundo="misto"][data-theme="light"] .bg .f-brisa { display: block; }
+.bg .st0 { stop-color: rgb(var(--rib-hi)); stop-opacity: 0; }
+.bg .st1 { stop-color: rgb(var(--rib-hi)); stop-opacity: .9; }
+.bg .sv0 { stop-color: rgb(var(--rib-hi)); stop-opacity: .16; }
+.bg .sv1 { stop-color: rgb(var(--rib-hi)); stop-opacity: 0; }
+.bg .ln { fill: none; stroke: url(#gl); stroke-linecap: round; }
+.bg .wd { stroke-width: 22; opacity: .06; }
+.bg .fill { fill: url(#gv); }
+.bg .halo { fill: url(#gh); }
+:root[data-theme="light"] .bg { opacity: .7; }
+@media (prefers-reduced-motion: no-preference) {
+  .bg .drift { animation: drift 80s ease-in-out infinite alternate; }
+  .bg .drift2 { animation: drift 110s ease-in-out infinite alternate-reverse; }
+  @keyframes drift { from { transform: translate3d(-26px, 6px, 0); } to { transform: translate3d(26px, -6px, 0); } }
+}
+
+/* ---------- assinatura discreta no rodapé ---------- */
+.brandline { margin: 18px 0 0; text-align: right; font: 600 .74rem var(--font-display); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); opacity: .75; }
+.brandline b { color: var(--accent); font-weight: 700; }
+
+/* ---------- calculadora ---------- */
+.cgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 12px; margin-top: 12px; }
+.cf small.hint { font-size: .72rem; color: var(--muted); }
+.cf.chk .chkrow { display: flex; align-items: center; gap: 8px; min-height: 38px; }
+.cf.chk input { width: 18px; height: 18px; accent-color: var(--accent); }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; margin-top: 16px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--line); }
+.stat { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.stat .sl { font: 600 .7rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stat .sv { font: 700 clamp(1.5rem, 3.4vw, 2rem)/1.1 var(--font-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.stat.accent .sv { color: var(--accent); }
+.detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px 24px; margin-top: 12px; }
+.dr { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.dr span { color: var(--muted); } .dr b { font-variant-numeric: tabular-nums; }
+.frase { margin: 12px 0 0; color: var(--muted); font-size: .9rem; max-width: 80ch; }
+.equiv { margin: 6px 0 0; font-size: .9rem; max-width: 80ch; color: var(--ink); }
+.tbl.mapa { min-width: 560px; }
+.tbl.mapa .gh th { background: var(--accent-soft); color: var(--accent); font: 700 .78rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; padding: 9px 12px; }
+.tbl.mapa td.ativo { font-weight: 600; }
+.notas { padding-left: 18px; margin-top: 12px; max-width: 90ch; } .notas li + li { margin-top: 4px; }

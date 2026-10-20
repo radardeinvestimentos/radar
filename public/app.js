@@ -227,6 +227,8 @@
       try { state.dict = (await getJson('./data/ativos.json')).ativos || []; } catch { state.dict = []; }
       recompile();
     }
+    if (!state.calcCfg) { try { state.calcCfg = await getJson('./data/calculadora.json'); } catch { state.calcCfg = null; } }
+    if (!state.mapa) { try { state.mapa = await getJson('./data/mapa-rf.json'); } catch { state.mapa = null; } }
   }
 
   // Lista pessoal: só tickers, guardada neste aparelho (nunca enviada).
@@ -263,6 +265,7 @@
     { id: 'agenda', label: 'Agenda' },
     { id: 'leituras', label: 'Leituras' },
     { id: 'conteudo', label: 'Conteúdo' },
+    { id: 'calculadora', label: 'Calculadora' },
     { id: 'impacto', label: 'Impacto para o assessor', cls: 'impact' },
   ];
   const WITH_FILTERS = new Set(['noticias', 'impacto', 'ativos']);
@@ -441,6 +444,177 @@
     }
   }
 
+  // ---------- Calculadora de renda fixa ----------
+  const brl0 = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  const brl2 = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const pc = (n, d = 2) => `${num(n, d)}%`;
+  function parseNum(v) {
+    let s = String(v ?? '').trim().replace(/[^\d.,-]/g, '');
+    if (!s) return NaN;
+    if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+    else if ((s.match(/\./g) || []).length > 1 || /\.\d{3}$/.test(s)) s = s.replace(/\./g, '');
+    return Number(s);
+  }
+  const INDEXADORES = [
+    ['cdi_pct', 'Pós-fixado: % do CDI', '% do CDI', '110'],
+    ['cdi_mais', 'Pós-fixado: CDI + taxa', 'Taxa acima do CDI (% a.a.)', '2'],
+    ['selic_mais', 'Tesouro Selic: Selic + taxa', 'Taxa acima da Selic (% a.a.)', '0,10'],
+    ['pre', 'Prefixado', 'Taxa prefixada (% a.a.)', '13,5'],
+    ['ipca_mais', 'IPCA + taxa real', 'Taxa real acima do IPCA (% a.a.)', '7,5'],
+    ['poupanca', 'Poupança', 'Sem taxa (0,5% ao mês)', '0'],
+  ];
+
+  function renderCalculadora(box) {
+    const C = window.RadarCalc;
+    if (!C) { box.append(unavailable('A calculadora')); return; }
+    const cfg = state.calcCfg || { selic: 13.75, cdi: 13.65, ipca: 4.5 };
+    let saved = {};
+    try { saved = JSON.parse(store.get('calc', '{}')) || {}; } catch { saved = {}; }
+    const st = { indexador: 'cdi_pct', tributacao: 'regressivo', taxa: '110', custodiaB3: false, outrasTaxas: '0', selic: String(cfg.selic).replace('.', ','), cdi: String(cfg.cdi).replace('.', ','), ipca: String(cfg.ipca).replace('.', ','), valor: '100.000', meses: '12', ...saved };
+
+    box.append(h('div', { class: 'note', text: 'Simulação com as premissas que você informar, para conversar com o cliente. Não consulta taxas de mercado, não inclui IOF, come-cotas, carência nem marcação a mercado, e as taxas dos modelos são só exemplos. Não é recomendação de investimento.' }));
+
+    const inputs = {};
+    const mk = (key, label, opts = {}) => {
+      const input = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': label });
+      input.value = st[key];
+      input.addEventListener('input', () => { st[key] = input.value; update(); });
+      inputs[key] = input;
+      return h('label', { class: 'field cf' }, h('span', { text: label, class: opts.dyn ? 'dyn' : '' }), input, opts.hint ? h('small', { class: 'hint', text: opts.hint }) : null);
+    };
+    const mkSel = (key, label, options) => {
+      const sel = h('select', { 'aria-label': label }, options.map(([v, l]) => h('option', { value: v, text: l })));
+      sel.value = st[key];
+      sel.addEventListener('change', () => { st[key] = sel.value; if (key === 'indexador') syncIdx(); update(); });
+      inputs[key] = sel;
+      return h('label', { class: 'field cf' }, h('span', { text: label }), sel);
+    };
+
+    // modelos de produto
+    const chipRow = h('div', { class: 'filters' }, h('span', { class: 'small quiet', text: 'Modelo:' }));
+    const chips = {};
+    for (const pr of C.PRESETS) {
+      const b = h('button', { class: 'pill', type: 'button', 'aria-pressed': 'false', onclick: () => applyPreset(pr) }, pr.nome);
+      chips[pr.id] = b; chipRow.append(b);
+    }
+    box.append(chipRow);
+
+    const f = state.extras.focus;
+    const fIpca = f?.ok ? f.linhas.filter((l) => l.indicador === 'IPCA').map((l) => `${l.ano}: ${num(l.mediana)}%`).join(' · ') : '';
+    box.append(h('div', { class: 'cgrid' },
+      mk('selic', 'Selic (% a.a.)', { hint: cfg.revisadoEm ? `Padrão revisado em ${fmtBR(cfg.revisadoEm)}` : '' }),
+      mk('cdi', 'CDI (% a.a.)', { hint: 'Costuma ficar ~0,10 abaixo da Selic' }),
+      mk('ipca', 'IPCA esperado (% a.a.)', { hint: fIpca ? `Focus: ${fIpca}` : '' }),
+      mk('valor', 'Valor aplicado (R$)'),
+      mk('meses', 'Prazo (meses)')));
+    box.append(h('div', { class: 'cgrid' },
+      mkSel('indexador', 'Indexador', INDEXADORES.map(([v, l]) => [v, l])),
+      mk('taxa', 'Taxa', { dyn: true }),
+      mkSel('tributacao', 'Imposto de renda', [['regressivo', 'IR regressivo (tributado)'], ['isento', 'Isento (LCI, LCA, CRI, CRA, debênture incentivada)']]),
+      mk('outrasTaxas', 'Outras taxas (% a.a.)', { hint: 'Ex.: administração de fundo' }),
+      (() => {
+        const cb = h('input', { type: 'checkbox' });
+        cb.checked = !!st.custodiaB3;
+        cb.addEventListener('change', () => { st.custodiaB3 = cb.checked; update(); });
+        inputs.custodiaB3 = cb;
+        return h('label', { class: 'field cf chk' }, h('span', { text: 'Custódia B3 (Tesouro)' }), h('div', { class: 'chkrow' }, cb, h('small', { class: 'hint', text: '0,20% a.a.; Tesouro Selic isento até R$ 10 mil' })));
+      })()));
+
+    // resultados no formato do exemplo
+    const out = {};
+    const stat = (id, label, cls) => { out[id] = h('b', { class: 'sv', text: '–' }); return h('div', { class: `stat ${cls || ''}` }, h('span', { class: 'sl', text: label }), out[id]); };
+    box.append(h('div', { class: 'strip' },
+      stat('liqAA', 'Juro real líquido (a.a.)', 'accent'),
+      stat('rendLiq', 'Rendimento líquido'),
+      stat('final', 'Valor final líquido'),
+      stat('ganhoReal', 'Ganho real (em R$ de hoje)')));
+    out.detail = h('div', { class: 'detail' });
+    out.frase = h('p', { class: 'frase' });
+    out.equiv = h('p', { class: 'equiv' });
+    const copyBtn = h('button', { class: 'btn', type: 'button' }, 'Copiar resumo');
+    out.copy = copyBtn;
+    box.append(out.detail, out.frase, out.equiv, h('div', { class: 'addrow' }, copyBtn));
+
+    let last = null;
+    copyBtn.addEventListener('click', () => { if (last) copyText(last.resumo, copyBtn); });
+
+    function syncIdx() {
+      const idx = INDEXADORES.find((x) => x[0] === st.indexador);
+      box.querySelector('.dyn').textContent = idx[2];
+      inputs.taxa.disabled = st.indexador === 'poupanca';
+      if (st.indexador === 'poupanca') inputs.tributacao.value = 'isento';
+      inputs.tributacao.disabled = st.indexador === 'poupanca';
+    }
+
+    function applyPreset(pr) {
+      st.indexador = pr.indexador; st.tributacao = pr.tributacao; st.taxa = String(pr.taxa).replace('.', ','); st.custodiaB3 = !!pr.custodiaB3;
+      inputs.indexador.value = st.indexador; inputs.tributacao.value = st.tributacao; inputs.taxa.value = st.taxa; inputs.custodiaB3.checked = st.custodiaB3;
+      st.preset = pr.id;
+      syncIdx(); update();
+    }
+
+    function update() {
+      const P = {
+        indexador: st.indexador, tributacao: st.tributacao, custodiaB3: !!st.custodiaB3,
+        taxa: st.indexador === 'poupanca' ? 0 : parseNum(st.taxa), selic: parseNum(st.selic), cdi: parseNum(st.cdi), ipca: parseNum(st.ipca),
+        valor: parseNum(st.valor), meses: parseNum(st.meses), outrasTaxas: parseNum(st.outrasTaxas) || 0,
+      };
+      for (const [id, b] of Object.entries(chips)) b.setAttribute('aria-pressed', String(st.preset === id));
+      store.set('calc', JSON.stringify({ ...st }));
+      const bad = ['taxa', 'selic', 'cdi', 'ipca', 'valor', 'meses'].find((k) => !Number.isFinite(P[k]) || ((k === 'valor' || k === 'meses') && P[k] <= 0));
+      if (bad) {
+        last = null;
+        for (const k of ['liqAA', 'rendLiq', 'final', 'ganhoReal']) out[k].textContent = '–';
+        out.detail.replaceChildren(); out.equiv.textContent = '';
+        out.frase.textContent = 'Preencha os campos com números (use vírgula para decimais) para ver o resultado.';
+        return;
+      }
+      const r = C.calcular(P, state.calcCfg?.faixasIR);
+      last = r;
+      out.liqAA.textContent = pc(r.jurosReaisAA);
+      out.rendLiq.textContent = brl0.format(r.rendLiq);
+      out.final.textContent = brl0.format(r.final);
+      out.ganhoReal.textContent = brl0.format(r.ganhoReal);
+      const row = (k, v) => h('div', { class: 'dr' }, h('span', { text: k }), h('b', { text: v }));
+      out.detail.replaceChildren(
+        row('Prazo', `${num(P.meses, P.meses % 1 ? 1 : 0)} meses (${r.dias} dias)`),
+        row('Rendimento bruto', brl2.format(r.rendBruto)),
+        row(r.isento ? 'Imposto de renda' : `Imposto de renda (${num(r.aliq, 1)}%)`, r.isento ? 'isento' : `− ${brl2.format(r.ir)}`),
+        row('Taxa bruta (a.a.)', pc(r.taxaBrutaAA)),
+        row('Taxa líquida (a.a.)', pc(r.taxaLiqAA)));
+      out.frase.textContent = `Com ${num(P.ipca)}% de inflação ao ano, o rendimento líquido de ${brl0.format(r.rendLiq)} tem juro real de ${pc(r.jurosReaisAA)} ao ano: dos ${brl0.format(r.rendLiq)}, ${brl0.format(r.reposicaoInflacao)} apenas repõem a inflação e ${brl0.format(r.ganhoReal)} são ganho real, em dinheiro de hoje.`;
+      const e = r.equivalente;
+      out.equiv.textContent = e.tipo === 'tributado'
+        ? `Equivalência: este isento rende o mesmo que um papel tributado (IR de ${num(e.aliq, 1)}%) de ${num(e.pctCDI, 1)}% do CDI, ou IPCA + ${num(e.ipcaMais)}% a.a., ou prefixado de ${num(e.preAA)}% a.a.`
+        : `Equivalência: este papel tributado (IR de ${num(e.aliq, 1)}%) rende o mesmo que um isento de ${num(e.pctCDI, 1)}% do CDI, ou IPCA + ${num(e.ipcaMais)}% a.a., ou prefixado de ${num(e.preAA)}% a.a.`;
+      const idxLabel = INDEXADORES.find((x) => x[0] === st.indexador)[1];
+      r.resumo = [`Simulação de renda fixa (estimativa)`, `Produto: ${idxLabel}${st.indexador === 'poupanca' ? '' : ` | taxa ${st.taxa}`} | ${r.isento ? 'isento de IR' : 'IR regressivo'}`, `Valor aplicado: ${brl2.format(P.valor)} por ${P.meses} meses (${r.dias} dias)`, `Premissas: Selic ${st.selic}% | CDI ${st.cdi}% | IPCA ${st.ipca}% ao ano`, `Rendimento bruto: ${brl2.format(r.rendBruto)} | IR: ${r.isento ? 'isento' : brl2.format(r.ir)}`, `Rendimento líquido: ${brl2.format(r.rendLiq)} | Valor final líquido: ${brl2.format(r.final)}`, `Juro real líquido: ${pc(r.jurosReaisAA)} a.a. | Ganho real: ${brl2.format(r.ganhoReal)} (em R$ de hoje)`, `Simulação com premissas informadas; não é recomendação de investimento. Rentabilidade passada não garante resultados futuros.`].join('\n');
+    }
+
+    syncIdx();
+    update();
+
+    // mapa de ativos
+    const m = state.mapa;
+    if (m?.grupos) {
+      box.append(h('h3', { class: 'sh', text: 'Mapa de ativos: renda fixa' }));
+      const badgeFor = (v) => {
+        const low = v.toLowerCase();
+        if (low.startsWith('isento')) return badge(v, 'on');
+        if (low === 'com fgc') return badge(v, 'on');
+        if (low === 'sem fgc') return badge(v, 'soon');
+        return v;
+      };
+      const rows = [];
+      for (const g of m.grupos) {
+        rows.push(h('tr', { class: 'gh' }, h('th', { colspan: String(m.colunas.length), text: g.titulo })));
+        for (const l of g.linhas) rows.push(h('tr', {}, l.map((c, i) => h('td', { class: i === 1 ? 'ativo' : '' }, i >= 3 ? badgeFor(c) : c))));
+      }
+      box.append(h('div', { class: 'tblw' }, h('table', { class: 'tbl mapa' }, h('thead', {}, h('tr', {}, m.colunas.map((c) => h('th', { text: c })))), h('tbody', {}, rows))));
+      if (m.notas?.length) box.append(h('ul', { class: 'small quiet notas' }, m.notas.map((n) => h('li', { text: n }))));
+    }
+  }
+
   // ---------- Conteúdo ----------
   function renderConteudo(box) {
     const c = state.extras.conteudo;
@@ -530,6 +704,7 @@
     else if (sec === 'agenda') renderAgenda(box);
     else if (sec === 'leituras') renderLeituras(box);
     else if (sec === 'conteudo') renderConteudo(box);
+    else if (sec === 'calculadora') renderCalculadora(box);
   }
 
   function renderList(all) {

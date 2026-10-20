@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark" data-brand="verde">
+<html lang="pt-BR" data-theme="dark" data-brand="verde" data-fundo="misto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,48 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<svg class="bg" aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+  <defs>
+    <linearGradient id="gl" gradientUnits="userSpaceOnUse" x1="-80" y1="0" x2="1540" y2="0"><stop offset="0" class="st0"/><stop offset=".35" class="st1"/><stop offset=".7" class="st1"/><stop offset="1" class="st0"/></linearGradient>
+    <linearGradient id="gv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sv0"/><stop offset="1" class="sv1"/></linearGradient>
+    <radialGradient id="gh"><stop offset="0" class="sv0"/><stop offset="1" class="sv1"/></radialGradient>
+  </defs>
+  <g class="f f-brisa">
+    <g class="drift">
+      <path class="ln wd" d="M-80 640 C220 520 480 760 820 620 S1280 430 1540 520"/>
+      <path class="ln" stroke-width="1.5" opacity=".55" d="M-80 640 C220 520 480 760 820 620 S1280 430 1540 520"/>
+      <path class="ln" stroke-width="1.1" opacity=".38" d="M-80 690 C260 580 520 800 860 670 S1300 500 1540 580"/>
+      <path class="ln" stroke-width=".9" opacity=".28" d="M-80 745 C300 640 560 840 900 725 S1320 560 1540 640"/>
+      <path class="ln" stroke-width=".8" opacity=".2" d="M-80 800 C340 700 600 880 940 780 S1340 620 1540 700"/>
+    </g>
+    <g class="drift2">
+      <path class="ln wd" d="M300 -40 C620 120 900 20 1180 150 S1420 260 1540 220"/>
+      <path class="ln" stroke-width="1.3" opacity=".45" d="M300 -40 C620 120 900 20 1180 150 S1420 260 1540 220"/>
+      <path class="ln" stroke-width=".9" opacity=".3" d="M430 -40 C730 150 960 70 1240 195 S1440 300 1540 285"/>
+      <path class="ln" stroke-width=".8" opacity=".2" d="M-80 330 C300 240 640 410 1000 280 S1400 190 1540 215"/>
+    </g>
+  </g>
+  <g class="f f-ondas">
+    <g class="drift">
+      <path class="fill" d="M-40 760 C240 690 480 830 760 770 S1200 680 1480 740 L1480 940 L-40 940Z"/>
+      <path class="ln" stroke-width="1.2" opacity=".5" d="M-40 760 C240 690 480 830 760 770 S1200 680 1480 740"/>
+    </g>
+    <g class="drift2">
+      <path class="fill" opacity=".7" d="M-40 815 C300 755 560 870 860 825 S1260 760 1480 805 L1480 940 L-40 940Z"/>
+      <path class="fill" opacity=".6" d="M1480 -20 L1480 230 C1260 195 1050 60 850 -20Z"/>
+      <path class="ln" stroke-width="1" opacity=".35" d="M850 -20 C1050 60 1260 195 1480 230"/>
+    </g>
+  </g>
+  <g class="f f-nevoa">
+    <g class="drift">
+      <ellipse class="halo" cx="1240" cy="40" rx="760" ry="400"/>
+      <ellipse class="halo" cx="140" cy="880" rx="700" ry="380" opacity=".85"/>
+    </g>
+    <g class="drift2">
+      <ellipse class="halo" cx="760" cy="470" rx="980" ry="120" opacity=".32" transform="rotate(-16 760 470)"/>
+    </g>
+  </g>
+</svg>
 <header class="top">
   <div class="wrap top-in">
     <div class="brand">
@@ -62,9 +104,11 @@
   <details id="api"><summary>Usar como API (JSON)</summary><div id="apiBody"></div></details>
   <p class="disclaimer" id="disclaimer"></p>
   <p id="actionsLink" class="small"></p>
+  <p class="brandline"><b>Grupo</b> Ável</p>
 </footer>
 
 <script src="match.js" defer></script>
+<script src="calc.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>

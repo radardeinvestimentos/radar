@@ -1,0 +1,37 @@
+{
+  "_comment": "Mapa de ativos de renda fixa (editável). Cada linha: emissor, ativo, indexador, imposto de renda, FGC.",
+  "revisadoEm": "2026-10-19",
+  "colunas": ["Emissor", "Ativo", "Indexador", "Imposto de renda", "FGC"],
+  "grupos": [
+    { "titulo": "Títulos públicos", "linhas": [
+      ["Governo", "LFT", "Selic", "Com IR", "Sem FGC"],
+      ["Governo", "LTN", "Pré", "Com IR", "Sem FGC"],
+      ["Governo", "NTN-B", "IPCA+", "Com IR", "Sem FGC"]
+    ]},
+    { "titulo": "Bancários", "linhas": [
+      ["Banco", "CDB", "CDI / Pré / IPCA+", "Com IR", "Com FGC"],
+      ["Banco", "LCI", "CDI / Pré / IPCA+", "Isento IR", "Com FGC"],
+      ["Banco", "LCA", "CDI / Pré / IPCA+", "Isento IR", "Com FGC"],
+      ["Banco", "LF", "CDI / Pré / IPCA+", "Com IR", "Sem FGC"]
+    ]},
+    { "titulo": "Financeiras", "linhas": [
+      ["Financeira", "LC", "CDI / Pré / IPCA+", "Com IR", "Com FGC"]
+    ]},
+    { "titulo": "Fundos", "linhas": [
+      ["Gestora", "Fundo DI", "CDI", "Com IR", "Sem FGC"],
+      ["Gestora", "Fundo RF CP", "CDI", "Com IR", "Sem FGC"]
+    ]},
+    { "titulo": "Empresas", "linhas": [
+      ["Empresa", "Debêntures", "CDI / IPCA+", "Com IR / Isento IR", "Sem FGC"],
+      ["Empresa", "CRI", "CDI / IPCA+", "Isento IR", "Sem FGC"],
+      ["Empresa", "CRA", "CDI / IPCA+", "Isento IR", "Sem FGC"]
+    ]}
+  ],
+  "notas": [
+    "IR regressivo (renda fixa tributada): 22,5% até 180 dias; 20% de 181 a 360; 17,5% de 361 a 720; 15% acima de 720 dias. Sobre o rendimento.",
+    "FGC: cobre até R$ 250 mil por CPF por instituição (somando o mesmo conglomerado), com limite global de R$ 1 milhão a cada 4 anos. O comunicado do FGC de 2026 lista CDB, RDB, LCI e LCA e exclui fundos e Letra Financeira. Confirme a cobertura de LC no regulamento do FGC (fgc.org.br).",
+    "Isenção de IR para pessoa física em LCI, LCA, CRI, CRA e debêntures incentivadas: segue valendo. A MP 1.303/2025, que tentava tributar esses papéis, perdeu a validade, mas o tema pode voltar ao debate. Confira a regra vigente antes de orientar clientes.",
+    "Fundos de renda fixa podem ter come-cotas (retenção de IR em maio e novembro), que a calculadora não considera.",
+    "Tesouro Direto: taxa de custódia da B3 de 0,20% ao ano (Tesouro Selic isento até R$ 10 mil por CPF)."
+  ]
+}
