@@ -1,6 +1,7 @@
 // Motor da calculadora de renda fixa. Roda no navegador (window.RadarCalc) e no Node (testes).
 // Reconstruído em 19/10/2026 a partir de test/calc.test.js e do uso em app.js (o arquivo original foi sobrescrito).
-// Simplificações: meses × 365/12 = dias; %CDI aplicado sobre a taxa anual do CDI; sem IOF, come-cotas, carência ou marcação a mercado.
+// Simplificações: meses × 365/12 = dias; %CDI aplicado sobre a taxa anual do CDI; sem come-cotas, carência ou marcação a mercado.
+// IOF (23/10/2026): regressivo nos primeiros 30 dias, só sobre o rendimento de papéis tributados; o IR incide sobre o rendimento já descontado do IOF.
 (function (root) {
   'use strict';
 
@@ -11,6 +12,9 @@
     { ateDias: null, aliquota: 15 },
   ];
   const INDEXADORES = ['cdi_pct', 'cdi_mais', 'selic_mais', 'pre', 'ipca_mais', 'poupanca'];
+  // IOF: % do rendimento cobrado no resgate, do dia 1 ao dia 29 (zero a partir do 30º dia).
+  const IOF = [96, 93, 90, 86, 83, 80, 76, 73, 70, 66, 63, 60, 56, 53, 50, 46, 43, 40, 36, 33, 30, 26, 23, 20, 16, 13, 10, 6, 3];
+  const iofAliquota = (dias) => (dias >= 1 && dias <= 29 ? IOF[dias - 1] : 0);
   const CUSTODIA_B3 = 0.2; // % a.a. (Tesouro Direto)
   const ISENTO_SELIC_ATE = 10000; // Tesouro Selic: isento de custódia até este valor
 
@@ -67,8 +71,10 @@
     const bruto = P.valor * Math.pow(1 + g, anos);
     const rendBruto = bruto - P.valor;
     const aliq = isento ? 0 : aliquotaIR(dias, faixasIR);
-    const ir = rendBruto > 0 ? (rendBruto * aliq) / 100 : 0;
-    const rendLiq = rendBruto - ir;
+    const iof = !isento && rendBruto > 0 ? (rendBruto * iofAliquota(dias)) / 100 : 0;
+    const baseIR = rendBruto - iof;
+    const ir = baseIR > 0 ? (baseIR * aliq) / 100 : 0;
+    const rendLiq = rendBruto - iof - ir;
     const final = P.valor + rendLiq;
     const taxaLiqAA = Math.pow(final / P.valor, 1 / anos) - 1;
     const jurosReaisAA = (1 + taxaLiqAA) / (1 + P.ipca / 100) - 1;
@@ -87,7 +93,7 @@
     };
 
     return {
-      dias, isento, aliq, ir, rendBruto, rendLiq, final,
+      dias, isento, aliq, ir, iof, rendBruto, rendLiq, final,
       taxaBrutaAA: g * 100, taxaLiqAA: taxaLiqAA * 100,
       jurosReaisAA: jurosReaisAA * 100,
       ganhoReal, reposicaoInflacao: rendLiq - ganhoReal,
@@ -95,7 +101,30 @@
     };
   }
 
-  const api = { FAIXAS, INDEXADORES, PRESETS, aliquotaIR, calcular };
+  /**
+   * Evolução do valor ao longo do prazo, como se o investidor resgatasse em cada data (IR e IOF do dia).
+   * Inclui pontos extras nas viradas de alíquota (dias 29/30, 180/181, 360/361, 720/721) para o gráfico mostrar o degrau.
+   * @returns {Array<{dias, meses, liquido, bruto, rentLiqPct, rentBrutaPct, inflacao}>}
+   */
+  function serie(P, faixasIR, opts) {
+    const total = Math.round((P.meses * 365) / 12);
+    const alvo = (opts && opts.pontos) || 60;
+    const passo = Math.max(1, Math.round(total / alvo));
+    const set = new Set([0, total]);
+    for (let d = passo; d < total; d += passo) set.add(d);
+    for (const k of [29, 30, 180, 181, 360, 361, 720, 721]) if (k < total) set.add(k);
+    const out = [];
+    for (const d of [...set].sort((a, b) => a - b)) {
+      const meses = (d * 12) / 365;
+      const infl = P.valor * Math.pow(1 + P.ipca / 100, d / 365);
+      if (d === 0) { out.push({ dias: 0, meses: 0, liquido: P.valor, bruto: P.valor, rentLiqPct: 0, rentBrutaPct: 0, inflacao: P.valor }); continue; }
+      const r = calcular({ ...P, meses }, faixasIR);
+      out.push({ dias: d, meses, liquido: r.final, bruto: P.valor + r.rendBruto, rentLiqPct: (r.final / P.valor - 1) * 100, rentBrutaPct: (r.rendBruto / P.valor) * 100, inflacao: infl });
+    }
+    return out;
+  }
+
+  const api = { FAIXAS, INDEXADORES, PRESETS, IOF, iofAliquota, aliquotaIR, calcular, serie };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RadarCalc = api;
 })(typeof window !== 'undefined' ? window : globalThis);

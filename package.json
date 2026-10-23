@@ -7,6 +7,6 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "collect": "node src/collect.js",
-    "test": "node --test --test-timeout=60000 test/radar.test.js test/tools.test.js test/ativos.test.js test/calc.test.js"
+    "test": "node --test --test-timeout=60000 test/radar.test.js test/tools.test.js test/ativos.test.js test/calc.test.js test/alertas.test.js test/pacotes.test.js"
   }
 }

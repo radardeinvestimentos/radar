@@ -1,37 +1,224 @@
 {
-  "_comment": "Mapa de ativos de renda fixa (editável). Cada linha: emissor, ativo, indexador, imposto de renda, FGC.",
-  "revisadoEm": "2026-10-19",
-  "colunas": ["Emissor", "Ativo", "Indexador", "Imposto de renda", "FGC"],
-  "grupos": [
-    { "titulo": "Títulos públicos", "linhas": [
-      ["Governo", "LFT", "Selic", "Com IR", "Sem FGC"],
-      ["Governo", "LTN", "Pré", "Com IR", "Sem FGC"],
-      ["Governo", "NTN-B", "IPCA+", "Com IR", "Sem FGC"]
-    ]},
-    { "titulo": "Bancários", "linhas": [
-      ["Banco", "CDB", "CDI / Pré / IPCA+", "Com IR", "Com FGC"],
-      ["Banco", "LCI", "CDI / Pré / IPCA+", "Isento IR", "Com FGC"],
-      ["Banco", "LCA", "CDI / Pré / IPCA+", "Isento IR", "Com FGC"],
-      ["Banco", "LF", "CDI / Pré / IPCA+", "Com IR", "Sem FGC"]
-    ]},
-    { "titulo": "Financeiras", "linhas": [
-      ["Financeira", "LC", "CDI / Pré / IPCA+", "Com IR", "Com FGC"]
-    ]},
-    { "titulo": "Fundos", "linhas": [
-      ["Gestora", "Fundo DI", "CDI", "Com IR", "Sem FGC"],
-      ["Gestora", "Fundo RF CP", "CDI", "Com IR", "Sem FGC"]
-    ]},
-    { "titulo": "Empresas", "linhas": [
-      ["Empresa", "Debêntures", "CDI / IPCA+", "Com IR / Isento IR", "Sem FGC"],
-      ["Empresa", "CRI", "CDI / IPCA+", "Isento IR", "Sem FGC"],
-      ["Empresa", "CRA", "CDI / IPCA+", "Isento IR", "Sem FGC"]
-    ]}
+ "_comment": "Mapa de ativos de renda fixa (editável). Cada linha: emissor, ativo (nome completo), indexador, imposto de renda, FGC, cupom, marcação. 'caracteristica' aparece sob o título do grupo.",
+ "revisadoEm": "2026-10-23",
+ "colunas": [
+  "Emissor",
+  "Ativo",
+  "Indexador",
+  "Imposto de renda",
+  "FGC",
+  "Cupom",
+  "Marcação*"
+ ],
+ "grupos": [
+  {
+   "titulo": "Títulos públicos",
+   "caracteristica": "Não é considerado ativo de liquidez diária: a venda depende da marcação a mercado e pode gerar rentabilidade diferente da contratada, até com perdas.",
+   "linhas": [
+    [
+     "Governo",
+     "LFT (Letra Financeira do Tesouro)",
+     "Selic",
+     "Com IR",
+     "Sem FGC",
+     "Bullet (juros e principal só no vencimento)",
+     "Mercado*"
+    ],
+    [
+     "Governo",
+     "LTN (Letra do Tesouro Nacional)",
+     "Pré",
+     "Com IR",
+     "Sem FGC",
+     "Bullet (juros e principal só no vencimento)",
+     "Mercado*"
+    ],
+    [
+     "Governo",
+     "NTN-F (Nota do Tesouro Nacional, série F)",
+     "Pré",
+     "Com IR",
+     "Sem FGC",
+     "Cupom semestral",
+     "Mercado*"
+    ],
+    [
+     "Governo",
+     "NTN-B Principal (Nota do Tesouro Nacional, série B, Principal)",
+     "IPCA+",
+     "Com IR",
+     "Sem FGC",
+     "Bullet (juros e principal só no vencimento)",
+     "Mercado*"
+    ],
+    [
+     "Governo",
+     "NTN-B (Nota do Tesouro Nacional, série B)",
+     "IPCA+",
+     "Com IR",
+     "Sem FGC",
+     "Cupom semestral",
+     "Mercado*"
+    ]
+   ]
+  },
+  {
+   "titulo": "Bancários",
+   "caracteristica": "Resgate trabalhado: podem ter liquidez diária se forem pós-fixados e sinalizados como ativos de liquidez na plataforma. IOF incide sobre o rendimento em resgates com menos de 30 dias (alíquota regressiva); a LCA é isenta de IOF para pessoa física.",
+   "linhas": [
+    [
+     "Banco",
+     "CDB (Certificado de Depósito Bancário)",
+     "CDI / Pré / IPCA+",
+     "Com IR",
+     "Com FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Curva*"
+    ],
+    [
+     "Banco",
+     "LCI (Letra de Crédito Imobiliário)",
+     "CDI / Pré / IPCA+",
+     "Isento IR",
+     "Com FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Curva*"
+    ],
+    [
+     "Banco",
+     "LCA (Letra de Crédito do Agronegócio)",
+     "CDI / Pré / IPCA+",
+     "Isento IR",
+     "Com FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Curva*"
+    ],
+    [
+     "Banco de desenvolvimento",
+     "LCD (Letra de Crédito do Desenvolvimento)",
+     "CDI / IPCA+",
+     "Isento IR",
+     "Com FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Curva*"
+    ],
+    [
+     "Banco",
+     "LF (Letra Financeira)",
+     "CDI / Pré / IPCA+",
+     "Com IR",
+     "Sem FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Curva*"
+    ]
+   ]
+  },
+  {
+   "titulo": "Financeiras",
+   "linhas": [
+    [
+     "Financeira",
+     "LC (Letra de Câmbio)",
+     "CDI / Pré / IPCA+",
+     "Com IR",
+     "Com FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Curva*"
+    ]
+   ]
+  },
+  {
+   "titulo": "Fundos",
+   "linhas": [
+    [
+     "Gestora",
+     "Fundo DI",
+     "CDI",
+     "Com IR",
+     "Sem FGC",
+     "Não paga cupom (rendimento na cota)",
+     "Cota diária"
+    ],
+    [
+     "Gestora",
+     "Fundo RF CP (Renda Fixa Crédito Privado)",
+     "CDI",
+     "Com IR",
+     "Sem FGC",
+     "Não paga cupom (rendimento na cota)",
+     "Cota diária"
+    ]
+   ]
+  },
+  {
+   "titulo": "Empresas (crédito privado)",
+   "caracteristica": "Não é considerado ativo de liquidez diária: a venda depende da marcação a mercado e pode gerar rentabilidade diferente da contratada, até com perdas.",
+   "linhas": [
+    [
+     "Empresa",
+     "Debênture",
+     "CDI / IPCA+",
+     "Com IR",
+     "Sem FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Mercado*"
+    ],
+    [
+     "Empresa",
+     "Debênture incentivada (infraestrutura)",
+     "IPCA+ / CDI",
+     "Isento IR",
+     "Sem FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Mercado*"
+    ],
+    [
+     "Empresa",
+     "CRI (Certificado de Recebíveis Imobiliários)",
+     "CDI / IPCA+",
+     "Isento IR",
+     "Sem FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Mercado*"
+    ],
+    [
+     "Empresa",
+     "CRA (Certificado de Recebíveis do Agronegócio)",
+     "CDI / IPCA+",
+     "Isento IR",
+     "Sem FGC",
+     "Cupom periódico (mensal, trimestral, semestral ou anual) ou bullet",
+     "Mercado*"
+    ]
+   ]
+  }
+ ],
+ "legenda": [
+  [
+   "Curva",
+   "A rentabilidade do ativo é corrigida diariamente pela taxa contratada."
   ],
-  "notas": [
-    "IR regressivo (renda fixa tributada): 22,5% até 180 dias; 20% de 181 a 360; 17,5% de 361 a 720; 15% acima de 720 dias. Sobre o rendimento.",
-    "FGC: cobre até R$ 250 mil por CPF por instituição (somando o mesmo conglomerado), com limite global de R$ 1 milhão a cada 4 anos. O comunicado do FGC de 2026 lista CDB, RDB, LCI e LCA e exclui fundos e Letra Financeira. Confirme a cobertura de LC no regulamento do FGC (fgc.org.br).",
-    "Isenção de IR para pessoa física em LCI, LCA, CRI, CRA e debêntures incentivadas: segue valendo. A MP 1.303/2025, que tentava tributar esses papéis, perdeu a validade, mas o tema pode voltar ao debate. Confira a regra vigente antes de orientar clientes.",
-    "Fundos de renda fixa podem ter come-cotas (retenção de IR em maio e novembro), que a calculadora não considera.",
-    "Tesouro Direto: taxa de custódia da B3 de 0,20% ao ano (Tesouro Selic isento até R$ 10 mil por CPF)."
+  [
+   "Mercado",
+   "Preço médio do ativo negociado no mercado, que pode ter ágio ou deságio."
+  ],
+  [
+   "Bullet",
+   "Juros e principal pagos apenas no vencimento."
+  ],
+  [
+   "Cupom",
+   "Pagamento periódico de juros. Pode ser mensal, trimestral, semestral ou anual, com ou sem amortização do principal antes do vencimento."
   ]
+ ],
+ "notas": [
+  "* Para vender o título antes do vencimento, a saída sempre considera a marcação a mercado, mesmo nos papéis marcados na curva. Por isso o valor de venda pode ser diferente do valor da curva.",
+  "Nomes no Tesouro Direto: LFT = Tesouro Selic; LTN = Tesouro Prefixado; NTN-F = Tesouro Prefixado com juros semestrais; NTN-B Principal = Tesouro IPCA+; NTN-B = Tesouro IPCA+ com juros semestrais.",
+  "Tributação (renda fixa): IOF mais tabela regressiva de IR. IR regressivo sobre o rendimento: 22,5% até 180 dias; 20% de 181 a 360; 17,5% de 361 a 720; 15% acima de 720 dias. Isentos de IR para pessoa física: LCI, LCA, LCD, CRI, CRA e debênture incentivada.",
+  "IOF: incide só sobre o rendimento em resgates com menos de 30 dias, com alíquota que cai de 96% do rendimento no 1º dia até zero no 30º. A LCA é isenta de IOF para pessoa física. Confirme a regra vigente para os demais papéis.",
+  "FGC: cobre até R$ 250 mil por CPF por instituição (somando o mesmo conglomerado), com limite global de R$ 1 milhão a cada 4 anos. O comunicado do FGC de 2026 lista CDB, RDB, LCI e LCA e exclui fundos e Letra Financeira. Confirme a cobertura de LC e LCD no regulamento do FGC (fgc.org.br).",
+  "Isenção de IR para pessoa física em LCI, LCA, CRI, CRA e debêntures incentivadas: segue valendo. A MP 1.303/2025, que tentava tributar esses papéis, perdeu a validade, mas o tema pode voltar ao debate. Confira a regra vigente antes de orientar clientes.",
+  "LCD (Letra de Crédito do Desenvolvimento): emitida por bancos de desenvolvimento (BNDES, BRDE, BDMG, Bandes); isenta de IR para pessoa física e com cobertura do FGC definida pelo CMN, conforme a imprensa especializada. Vencimento mínimo de 12 meses. Confirme as regras atuais e se há emissões disponíveis antes de ofertar.",
+  "Cupom e marcação de LF e LC não constam do material de referência: seguem o mesmo padrão dos demais bancários e merecem conferência. Fundos de renda fixa podem ter come-cotas (retenção de IR em maio e novembro), que a calculadora não considera."
+ ]
 }

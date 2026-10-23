@@ -121,3 +121,9 @@ O site e os JSON ficam **públicos** (quem tiver o endereço acessa). Eles cont�
 npm test            # 15 testes (parser, classificação, impacto, gatilhos, agenda, Focus, conteúdo, ativos, coleta ponta a ponta)
 node src/collect.js # gera public/api/ localmente (precisa de internet livre)
 ```
+
+## Calculadora, mapa e Educação (23/10/2026)
+- **Calculadora**: compara até 4 investimentos lado a lado, com gráfico da evolução líquida (IR regressivo, IOF dos 30 primeiros dias e custódia B3). Código: `public/calc.js` (cálculo), `public/chart.js` (gráfico), `public/app.js` (tela).
+- **Mapa de ativos de renda fixa**: `public/data/mapa-rf.json` (nome completo, cupom, marcação, característica de cada classe, legenda e notas).
+- **Educação**: `public/data/educacao.json`. Itens com `"confirmar": true` mostram o selo "a confirmar"; apague a linha depois de revisar.
+- Testes novos: `test/pacotes.test.js`.
