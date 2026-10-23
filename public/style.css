@@ -352,3 +352,10 @@ h3 a:hover { text-decoration: underline; text-decoration-color: var(--accent); t
 .chip { border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: .86rem; }
 
 .tbl.mapa .badge { white-space: nowrap; }
+
+/* ---- Barra de rolagem visível nas abas (verde da marca), logo abaixo dos títulos ---- */
+.tabs { scrollbar-width: thin; scrollbar-color: var(--accent) var(--line); padding-bottom: 6px; }
+.tabs::-webkit-scrollbar { display: block; height: 6px; }
+.tabs::-webkit-scrollbar-track { background: var(--line); border-radius: 999px; }
+.tabs::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 999px; }
+.tabs::-webkit-scrollbar-thumb:hover { background: var(--fill); }
