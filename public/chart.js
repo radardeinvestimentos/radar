@@ -148,6 +148,83 @@
     return wrap;
   }
 
-  root.RadarChart = { render, nice, xTicks };
+  /**
+   * Áreas empilhadas (composição ao longo do tempo). Base em zero e folga de 2px entre camadas.
+   *  o: {dias:[], camadas:[{id,nome,cor,valores:[]}], total:[], ref:{nome,valores:[]}|null, fmtY, fmtTip, compacto, titulo}
+   */
+  function renderArea(o) {
+    const c = !!o.compacto;
+    const W = c ? 420 : 760, H = c ? 330 : 340, L = c ? 50 : 62, R = 16, T = 14, B = 34;
+    const wrap = htmlEl('div', 'chart');
+    const dias = o.dias, total = dias[dias.length - 1] || 1;
+    const topo = Math.max(...o.total, ...(o.ref ? o.ref.valores : []));
+    const ys = nice(0, topo, 5);
+    const X = (d) => L + (d / total) * (W - L - R);
+    const Y = (v) => T + (1 - (v - ys.min) / (ys.max - ys.min)) * (H - T - B);
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, class: 'chart-svg', role: 'img', tabindex: '0', 'aria-label': o.titulo || 'Composição da carteira ao longo do tempo' });
+    for (const t of ys.ticks) {
+      svg.append(svgEl('line', { x1: L, x2: W - R, y1: Y(t), y2: Y(t), class: 'gridl' }));
+      svg.append(svgEl('text', { x: L - 8, y: Y(t) + 4, class: 'axl', 'text-anchor': 'end' }, o.fmtY(t)));
+    }
+    for (const m of xTicks(total, c)) {
+      const d = (m * 365) / 12;
+      svg.append(svgEl('line', { x1: X(d), x2: X(d), y1: H - B, y2: H - B + 4, class: 'axt' }));
+      svg.append(svgEl('text', { x: X(d), y: H - B + 17, class: 'axl', 'text-anchor': 'middle' }, rotuloX(m)));
+    }
+    // empilha de baixo para cima
+    const base = dias.map(() => 0);
+    for (const cam of o.camadas) {
+      const topoC = cam.valores.map((v, i) => base[i] + v);
+      const up = dias.map((d, i) => `${X(d).toFixed(1)},${Y(topoC[i]).toFixed(1)}`);
+      const dn = dias.map((d, i) => `${X(d).toFixed(1)},${Y(base[i]).toFixed(1)}`).reverse();
+      svg.append(svgEl('path', { d: `M${up.join('L')}L${dn.join('L')}Z`, fill: cam.cor, class: 'area' }));
+      cam.valores.forEach((v, i) => { base[i] = topoC[i]; });
+    }
+    svg.append(svgEl('line', { x1: L, x2: W - R, y1: H - B, y2: H - B, class: 'axb' }));
+    if (o.ref) svg.append(svgEl('path', { d: o.ref.valores.map((v, i) => `${i ? 'L' : 'M'}${X(dias[i]).toFixed(1)},${Y(v).toFixed(1)}`).join(''), class: 'ln ref' }));
+    const guia = svgEl('line', { y1: T, y2: H - B, class: 'guia', visibility: 'hidden' });
+    svg.append(guia);
+    const tip = htmlEl('div', 'chart-tip'); tip.hidden = true;
+    const hit = svgEl('rect', { x: L, y: T, width: W - L - R, height: H - T - B, fill: 'transparent', class: 'hit' });
+    svg.append(hit);
+    let idx = dias.length - 1;
+    function mostrar(i) {
+      idx = Math.max(0, Math.min(dias.length - 1, i));
+      const d = dias[idx];
+      guia.setAttribute('x1', X(d)); guia.setAttribute('x2', X(d)); guia.setAttribute('visibility', 'visible');
+      tip.replaceChildren();
+      const m = (d * 12) / 365;
+      tip.append(htmlEl('div', 'tt', d === 0 ? 'Início' : `${d} dias (${m < 10 ? m.toFixed(1).replace('.', ',') : Math.round(m)} meses)`));
+      for (const cam of [...o.camadas].reverse()) {
+        const row = htmlEl('div', 'tr'); const key = htmlEl('i', 'tk'); key.style.background = cam.cor;
+        row.append(key, htmlEl('b', null, o.fmtTip(cam.valores[idx])), htmlEl('span', null, cam.nome)); tip.append(row);
+      }
+      const rt = htmlEl('div', 'tr tot'); rt.append(htmlEl('i', 'tk none'), htmlEl('b', null, o.fmtTip(o.total[idx])), htmlEl('span', null, 'Total líquido')); tip.append(rt);
+      if (o.ref) { const rr = htmlEl('div', 'tr'); rr.append(htmlEl('i', 'tk ref'), htmlEl('b', null, o.fmtTip(o.ref.valores[idx])), htmlEl('span', null, o.ref.nome)); tip.append(rr); }
+      tip.hidden = false;
+      if (c) { tip.style.left = 'auto'; tip.style.right = 'auto'; return; }
+      const box = wrap.getBoundingClientRect(), px = (X(d) / W) * box.width, lado = px > box.width * 0.6;
+      tip.style.left = lado ? 'auto' : `${px + 12}px`; tip.style.right = lado ? `${box.width - px + 12}px` : 'auto';
+    }
+    const idxFromX = (clientX) => {
+      const r = svg.getBoundingClientRect();
+      const d = ((clientX - r.left) / r.width * W - L) / (W - L - R) * total;
+      let best = 0; for (let i = 1; i < dias.length; i++) if (Math.abs(dias[i] - d) < Math.abs(dias[best] - d)) best = i;
+      return best;
+    };
+    const esconder = () => { tip.hidden = true; guia.setAttribute('visibility', 'hidden'); };
+    hit.addEventListener('pointermove', (e) => mostrar(idxFromX(e.clientX)));
+    hit.addEventListener('pointerleave', esconder);
+    svg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); mostrar(tip.hidden ? 0 : idx + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); mostrar(tip.hidden ? dias.length - 1 : idx - 1); }
+      else if (e.key === 'Escape') esconder();
+    });
+    svg.addEventListener('blur', esconder);
+    wrap.append(svg, tip);
+    return wrap;
+  }
+
+  root.RadarChart = { render, renderArea, nice, xTicks };
   if (typeof module !== 'undefined' && module.exports) module.exports = { nice, xTicks };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -1,0 +1,21 @@
+{
+  "revisadoEm": "2026-11-06",
+  "fonte": "Modelo de alocação por perfil informado pelo assessor (3 perfis). Os percentuais são um ponto de partida e podem ser editados na calculadora.",
+  "tolerancia": 5,
+  "modalidades": [
+    { "id": "pos", "nome": "Renda fixa Brasil: pós-fixado", "curto": "Pós-fixado" },
+    { "id": "infl", "nome": "Renda fixa Brasil: inflação", "curto": "Inflação" },
+    { "id": "pre", "nome": "Renda fixa Brasil: prefixado", "curto": "Prefixado" },
+    { "id": "rfint", "nome": "Renda fixa internacional", "curto": "RF internacional" },
+    { "id": "rvbr", "nome": "Renda variável Brasil", "curto": "RV Brasil" },
+    { "id": "rvint", "nome": "Renda variável internacional", "curto": "RV internacional" },
+    { "id": "multi", "nome": "Multimercados", "curto": "Multimercados" },
+    { "id": "listados", "nome": "Fundos listados", "curto": "Fundos listados" },
+    { "id": "alt", "nome": "Alternativos", "curto": "Alternativos" }
+  ],
+  "perfis": [
+    { "id": "conservadora", "nome": "Conservadora", "caixaMinimo": 20, "metas": { "pos": 71.5, "infl": 12.5, "pre": 6, "rfint": 2.5, "rvbr": 0, "rvint": 2.5, "multi": 2.5, "listados": 2.5, "alt": 0 } },
+    { "id": "moderada", "nome": "Moderada", "caixaMinimo": 15, "metas": { "pos": 34.5, "infl": 22.5, "pre": 11, "rfint": 2.5, "rvbr": 5, "rvint": 4.5, "multi": 13, "listados": 4, "alt": 3 } },
+    { "id": "sofisticada", "nome": "Sofisticada", "caixaMinimo": 10, "metas": { "pos": 14, "infl": 27.5, "pre": 9.5, "rfint": 2.5, "rvbr": 15, "rvint": 7, "multi": 8, "listados": 9.5, "alt": 7 } }
+  ]
+}

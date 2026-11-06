@@ -129,3 +129,58 @@ test('Site: nova aba, script do gráfico e render do mapa carregados', () => {
   assert.match(app, /renderEducacao\(box\)/);
   assert.match(app, /data\/educacao\.json/);
 });
+
+// ---------- Carteira (visão 360°) ----------
+{
+  const test2 = test, assert2 = assert, Cc = C;
+  const kctx = { module: { exports: {} } };
+  vm.runInNewContext(read('public/carteira.js'), kctx);
+  const K = kctx.RadarCarteira;
+  const modelo = json('public/data/carteiras-modelo.json');
+  const nomes = {};
+  test2('carteira: os 3 modelos somam 100% e cobrem as 9 modalidades', () => {
+    assert2.equal(modelo.perfis.length, 3);
+    for (const p of modelo.perfis) {
+      assert2.deepEqual(Object.keys(p.metas).sort(), [...K.MODALIDADES].sort());
+      assert2.ok(Math.abs(Object.values(p.metas).reduce((a, b) => a + b, 0) - 100) < 1e-9, p.id);
+      assert2.ok(p.caixaMinimo <= p.metas.pos);
+    }
+  });
+  test2('carteira: modalidade pelo indexador', () => {
+    assert2.equal(K.modalidadeDe('cdi_pct'), 'pos'); assert2.equal(K.modalidadeDe('poupanca'), 'pos');
+    assert2.equal(K.modalidadeDe('ipca_mais'), 'infl'); assert2.equal(K.modalidadeDe('pre'), 'pre');
+  });
+  test2('carteira: sem meta não há alerta; com meta, alerta fora da tolerância e caixa abaixo do mínimo', () => {
+    const pos = [{ modalidade: 'pos', valor: 60, caixa: false }, { modalidade: 'infl', valor: 40, caixa: false }];
+    const sem = K.consolidar({ posicoes: pos, metas: {}, caixaMinimo: 20, tolerancia: 5, nomes });
+    assert2.equal(sem.alertas.length, 0);
+    const metas = modelo.perfis.find((p) => p.id === 'moderada').metas;
+    const c = K.consolidar({ posicoes: pos, metas, caixaMinimo: 15, tolerancia: 5, nomes });
+    const ids = c.alertas.map((a) => a.id);
+    assert2.ok(ids.includes('pos') && ids.includes('infl') && ids.includes('caixa'));
+    assert2.equal(c.total, 100); assert2.equal(c.pct.pos, 60);
+  });
+  test2('carteira: caixa só conta em pós-fixado e tolerância é respeitada', () => {
+    const metas = { pos: 50, infl: 50 };
+    const dentro = K.consolidar({ posicoes: [{ modalidade: 'pos', valor: 55, caixa: true }, { modalidade: 'infl', valor: 45, caixa: true }], metas, caixaMinimo: 50, tolerancia: 5, nomes });
+    assert2.equal(dentro.alertas.length, 0); assert2.ok(Math.abs(dentro.caixaPct - 55) < 1e-9);
+    const fora = K.consolidar({ posicoes: [{ modalidade: 'pos', valor: 56, caixa: false }, { modalidade: 'infl', valor: 44 }], metas, caixaMinimo: 0, tolerancia: 5, nomes });
+    assert2.equal(fora.alertas.length, 2);
+  });
+  test2('carteira: agregação mantém o valor parado após o vencimento', () => {
+    const P1 = { indexador: 'cdi_pct', tributacao: 'regressivo', taxa: 100, selic: 13.75, cdi: 13.65, ipca: 4.5, valor: 1000, meses: 6, outrasTaxas: 0 };
+    const P2 = { ...P1, valor: 2000, meses: 24 };
+    const s1 = Cc.serie(P1), s2 = Cc.serie(P2);
+    const a = K.agregar([{ valor: 1000, grupo: 'pos', pts: s1 }, { valor: 2000, grupo: 'pos', pts: s2 }], 4.5);
+    assert2.equal(a.dias[0], 0); assert2.equal(a.total[0], 3000);
+    const fin1 = s1[s1.length - 1].liquido, fin2 = s2[s2.length - 1].liquido;
+    assert2.ok(Math.abs(a.total[a.total.length - 1] - (fin1 + fin2)) < 1e-6);
+    const k = a.dias.indexOf(s1[s1.length - 1].dias);
+    assert2.ok(Math.abs(K.valorEm(s1, 400) - fin1) < 1e-9 && k > 0);
+    assert2.ok(a.infl[a.infl.length - 1] > 3000);
+  });
+  test2('carteira: site carrega o script e os dados do modelo', () => {
+    assert2.ok(read('public/index.html').includes('carteira.js'));
+    assert2.ok(read('public/app.js').includes('carteiras-modelo.json'));
+  });
+}

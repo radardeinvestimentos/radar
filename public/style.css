@@ -359,3 +359,36 @@ h3 a:hover { text-decoration: underline; text-decoration-color: var(--accent); t
 .tabs::-webkit-scrollbar-track { background: var(--line); border-radius: 999px; }
 .tabs::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 999px; }
 .tabs::-webkit-scrollbar-thumb:hover { background: var(--fill); }
+
+/* ---- Calculadora: carteira total (visão 360°) ---- */
+.sc-h .chk-inline { font-size: .84rem; white-space: nowrap; }
+.sc-h .btn { margin-left: auto; }
+.sc-h { flex-wrap: wrap; row-gap: 6px; }
+.cart-row { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.cart-row.off .cgrid { opacity: .55; }
+.cart-cap { font: 700 .72rem var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.cart { margin-top: 18px; }
+.cart-sub { margin-top: 14px; }
+.metas .soma { align-self: center; font-size: .86rem; color: var(--muted); margin-right: auto; }
+.metas-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.orow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.orow select, .orow input[type=text] { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; min-height: 38px; color: var(--ink); }
+.orow input[type=text] { width: 150px; }
+.ast { color: var(--down); font-weight: 700; }
+.alertas { margin-top: 6px; }
+.alerta { margin: 3px 0; font-size: .82rem; color: var(--down); }
+.chart .area { stroke: var(--surface); stroke-width: 2; fill-opacity: .92; }
+.chart-tip .tr.tot { border-top: 1px solid var(--line); margin-top: 3px; padding-top: 4px; }
+.chart-tip .tk.none { background: none; }
+.bars { display: grid; gap: 6px; margin-top: 10px; }
+.bar-row { display: grid; grid-template-columns: minmax(120px, 210px) 1fr minmax(110px, 190px); gap: 10px; align-items: center; font-size: .86rem; }
+.bar-t { position: relative; height: 14px; background: color-mix(in srgb, var(--muted) 22%, transparent); border-radius: 7px; }
+.bar-f { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s1); border-radius: 7px; min-width: 2px; }
+.bar-f.cx { background: var(--s3); }
+.bar-m { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); border-radius: 1px; }
+.bar-v { font-variant-numeric: tabular-nums; font-weight: 600; }
+.bar-v small { font-weight: 400; }
+@media (max-width: 720px) { .bar-row { grid-template-columns: 1fr; gap: 3px; } }
+.metas-grid .field, .bar-row > * { min-width: 0; }
+.metas-grid input { width: 100%; min-width: 0; }
+@media (max-width: 720px) { .metas-grid { grid-template-columns: 1fr 1fr; } .orow select { flex: 1 1 100%; } .orow input[type=text] { flex: 1 1 120px; width: auto; } }
