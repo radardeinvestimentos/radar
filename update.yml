@@ -2,8 +2,10 @@ name: Atualizar notícias
 
 on:
   schedule:
-    - cron: "*/15 9-23,0-2 * * *"
-    - cron: "5 3-8 * * *"
+    # Horário de Brasília ~06h–23h: a cada 15 min. Madrugada: de hora em hora.
+    # (cron do GitHub é UTC e "melhor esforço"; evitamos os minutos 0/15/30/45, quando o GitHub mais descarta execuções)
+    - cron: "7,22,37,52 9-23,0-2 * * *"
+    - cron: "17 3-8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -11,9 +13,10 @@ permissions:
   pages: write
   id-token: write
 
+# Uma coleta por vez. Se uma execução travar, a próxima cancela a travada (antes ela ficava na fila para sempre).
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -28,7 +31,9 @@ jobs:
 
       - name: Coletar, classificar e analisar
         env:
+          # O histórico vem do próprio site publicado (evita commitar dados a cada 15 min).
           PREVIOUS_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/api/news.json
+          # Opcional: análise com IA (Gemini, camada gratuita). Se não houver secret, é ignorado.
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node src/collect.js
 
@@ -41,6 +46,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

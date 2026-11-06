@@ -127,3 +127,10 @@ node src/collect.js # gera public/api/ localmente (precisa de internet livre)
 - **Mapa de ativos de renda fixa**: `public/data/mapa-rf.json` (nome completo, cupom, marcação, característica de cada classe, legenda e notas).
 - **Educação**: `public/data/educacao.json`. Itens com `"confirmar": true` mostram o selo "a confirmar"; apague a linha depois de revisar.
 - Testes novos: `test/pacotes.test.js`.
+
+## Calculadora: carteira total (visão 360°)
+
+- Cada investimento tem "Comparar" (até 4 no gráfico de comparação) e "Incluir na carteira" (até 8 investimentos), com valor, prazo, modalidade e "conta como caixa" próprios.
+- A renda fixa Brasil incluída é projetada (líquida de IR, IOF e custódia). Outras modalidades entram como "outras posições", só para medir a concentração.
+- Os modelos Conservadora, Moderada e Sofisticada ficam em `public/data/carteiras-modelo.json` (percentuais, caixa mínimo e tolerância); no site todos os campos são editáveis. Os avisos em vermelho (*) aparecem abaixo do gráfico de concentração quando uma modalidade foge da meta além da tolerância ou o caixa fica abaixo do mínimo.
+- A lógica fica em `public/carteira.js` (testada em `test/pacotes.test.js`).
