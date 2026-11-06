@@ -1,0 +1,1082 @@
+{
+ "_comment": "Dicionário de papéis. t = ticker principal (as outras classes, como PETR3 e PETR4, são reconhecidas pela raiz); n = nome; a = apelidos que aparecem nas manchetes; i = índice (50 = IBrX 50; 100 = faz parte do IBrX 100 e não do 50). Composição do IBrX conforme Status Invest em 17/10/2026; a B3 revisa a carteira a cada quatro meses, então confira e ajuste. Pode editar este arquivo no GitHub.",
+ "revisadoEm": "2026-10-17",
+ "ativos": [
+  {
+   "t": "AXIA3",
+   "n": "Axia Energia (ex-Eletrobras)",
+   "a": [
+    "axia energia",
+    "axia",
+    "eletrobras",
+    "elet3",
+    "elet6"
+   ],
+   "i": 50
+  },
+  {
+   "t": "PETR4",
+   "n": "Petrobras",
+   "a": [
+    "petrobras"
+   ],
+   "i": 50
+  },
+  {
+   "t": "VALE3",
+   "n": "Vale",
+   "a": [
+    "mineradora vale",
+    "vale s.a.",
+    "vale s.a",
+    "da vale",
+    "pela vale",
+    "na vale"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ITUB4",
+   "n": "Itaú Unibanco",
+   "a": [
+    "itau unibanco",
+    "itau"
+   ],
+   "i": 50
+  },
+  {
+   "t": "BBDC4",
+   "n": "Bradesco",
+   "a": [
+    "bradesco"
+   ],
+   "i": 50
+  },
+  {
+   "t": "BBAS3",
+   "n": "Banco do Brasil",
+   "a": [
+    "banco do brasil"
+   ],
+   "i": 50
+  },
+  {
+   "t": "BPAC11",
+   "n": "BTG Pactual",
+   "a": [
+    "btg pactual",
+    "btg"
+   ],
+   "i": 50
+  },
+  {
+   "t": "SANB11",
+   "n": "Santander Brasil",
+   "a": [
+    "santander brasil"
+   ],
+   "i": 100
+  },
+  {
+   "t": "B3SA3",
+   "n": "B3",
+   "a": [
+    "b3"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ITSA4",
+   "n": "Itaúsa",
+   "a": [
+    "itausa"
+   ],
+   "i": 50
+  },
+  {
+   "t": "BBSE3",
+   "n": "BB Seguridade",
+   "a": [
+    "bb seguridade"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CXSE3",
+   "n": "Caixa Seguridade",
+   "a": [
+    "caixa seguridade"
+   ],
+   "i": 100
+  },
+  {
+   "t": "PSSA3",
+   "n": "Porto Seguro",
+   "a": [
+    "porto seguro"
+   ],
+   "i": 100
+  },
+  {
+   "t": "WEGE3",
+   "n": "WEG",
+   "a": [
+    "weg"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ABEV3",
+   "n": "Ambev",
+   "a": [
+    "ambev"
+   ],
+   "i": 50
+  },
+  {
+   "t": "EMBJ3",
+   "n": "Embraer",
+   "a": [
+    "embraer",
+    "embr3"
+   ],
+   "i": 50
+  },
+  {
+   "t": "SBSP3",
+   "n": "Sabesp",
+   "a": [
+    "sabesp"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ENEV3",
+   "n": "Eneva",
+   "a": [
+    "eneva"
+   ],
+   "i": 50
+  },
+  {
+   "t": "EQTL3",
+   "n": "Equatorial",
+   "a": [
+    "equatorial energia"
+   ],
+   "i": 50
+  },
+  {
+   "t": "PRIO3",
+   "n": "PRIO",
+   "a": [
+    "prio",
+    "petrorio",
+    "petro rio"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CPLE3",
+   "n": "Copel",
+   "a": [
+    "copel"
+   ],
+   "i": 50
+  },
+  {
+   "t": "RENT3",
+   "n": "Localiza",
+   "a": [
+    "localiza&co",
+    "localiza hertz",
+    "grupo localiza"
+   ],
+   "i": 50
+  },
+  {
+   "t": "RDOR3",
+   "n": "Rede D'Or",
+   "a": [
+    "rede d'or",
+    "rede dor",
+    "rede d’or"
+   ],
+   "i": 50
+  },
+  {
+   "t": "VBBR3",
+   "n": "Vibra Energia",
+   "a": [
+    "vibra energia",
+    "vibra"
+   ],
+   "i": 50
+  },
+  {
+   "t": "UGPA3",
+   "n": "Ultrapar",
+   "a": [
+    "ultrapar"
+   ],
+   "i": 50
+  },
+  {
+   "t": "GGBR4",
+   "n": "Gerdau",
+   "a": [
+    "gerdau"
+   ],
+   "i": 50
+  },
+  {
+   "t": "GOAU4",
+   "n": "Metalúrgica Gerdau",
+   "a": [
+    "metalurgica gerdau"
+   ],
+   "i": 100
+  },
+  {
+   "t": "RADL3",
+   "n": "Raia Drogasil",
+   "a": [
+    "raiadrogasil",
+    "raia drogasil",
+    "drogasil"
+   ],
+   "i": 50
+  },
+  {
+   "t": "SUZB3",
+   "n": "Suzano",
+   "a": [
+    "suzano"
+   ],
+   "i": 50
+  },
+  {
+   "t": "RAIL3",
+   "n": "Rumo",
+   "a": [
+    "rumo logistica",
+    "rumo s.a"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ENGI11",
+   "n": "Energisa",
+   "a": [
+    "energisa"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CSMG3",
+   "n": "Copasa",
+   "a": [
+    "copasa"
+   ],
+   "i": 50
+  },
+  {
+   "t": "VIVT3",
+   "n": "Vivo (Telefônica Brasil)",
+   "a": [
+    "telefonica brasil"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CMIG4",
+   "n": "Cemig",
+   "a": [
+    "cemig"
+   ],
+   "i": 50
+  },
+  {
+   "t": "TOTS3",
+   "n": "Totvs",
+   "a": [
+    "totvs"
+   ],
+   "i": 50
+  },
+  {
+   "t": "MOTV3",
+   "n": "Motiva (ex-CCR)",
+   "a": [
+    "motiva s.a",
+    "grupo motiva",
+    "motiva infraestrutura"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ASAI3",
+   "n": "Assaí",
+   "a": [
+    "assai"
+   ],
+   "i": 50
+  },
+  {
+   "t": "ALOS3",
+   "n": "Allos",
+   "a": [
+    "allos"
+   ],
+   "i": 50
+  },
+  {
+   "t": "TIMS3",
+   "n": "TIM",
+   "a": [
+    "tim brasil",
+    "tim s.a"
+   ],
+   "i": 50
+  },
+  {
+   "t": "MBRF3",
+   "n": "MBRF (Marfrig e BRF)",
+   "a": [
+    "mbrf",
+    "marfrig",
+    "brf"
+   ],
+   "i": 50
+  },
+  {
+   "t": "SMFT3",
+   "n": "Smart Fit",
+   "a": [
+    "smart fit",
+    "smartfit"
+   ],
+   "i": 50
+  },
+  {
+   "t": "LREN3",
+   "n": "Lojas Renner",
+   "a": [
+    "lojas renner",
+    "renner"
+   ],
+   "i": 50
+  },
+  {
+   "t": "MULT3",
+   "n": "Multiplan",
+   "a": [
+    "multiplan"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CSAN3",
+   "n": "Cosan",
+   "a": [
+    "cosan"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CYRE3",
+   "n": "Cyrela",
+   "a": [
+    "cyrela"
+   ],
+   "i": 50
+  },
+  {
+   "t": "BRAV3",
+   "n": "Brava Energia",
+   "a": [
+    "brava energia"
+   ],
+   "i": 50
+  },
+  {
+   "t": "COGN3",
+   "n": "Cogna",
+   "a": [
+    "cogna"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CURY3",
+   "n": "Cury",
+   "a": [
+    "cury"
+   ],
+   "i": 50
+  },
+  {
+   "t": "MGLU3",
+   "n": "Magazine Luiza",
+   "a": [
+    "magazine luiza",
+    "magalu"
+   ],
+   "i": 50
+  },
+  {
+   "t": "USIM5",
+   "n": "Usiminas",
+   "a": [
+    "usiminas"
+   ],
+   "i": 50
+  },
+  {
+   "t": "DIRR3",
+   "n": "Direcional",
+   "a": [
+    "direcional engenharia"
+   ],
+   "i": 50
+  },
+  {
+   "t": "CEAB3",
+   "n": "C&A",
+   "a": [
+    "c&a"
+   ],
+   "i": 50
+  },
+  {
+   "t": "HAPV3",
+   "n": "Hapvida",
+   "a": [
+    "hapvida"
+   ],
+   "i": 50
+  },
+  {
+   "t": "KLBN11",
+   "n": "Klabin",
+   "a": [
+    "klabin"
+   ],
+   "i": 100
+  },
+  {
+   "t": "CSNA3",
+   "n": "CSN",
+   "a": [
+    "csn",
+    "companhia siderurgica nacional"
+   ],
+   "i": 100
+  },
+  {
+   "t": "CMIN3",
+   "n": "CSN Mineração",
+   "a": [
+    "csn mineracao"
+   ],
+   "i": 100
+  },
+  {
+   "t": "TAEE11",
+   "n": "Taesa",
+   "a": [
+    "taesa"
+   ],
+   "i": 100
+  },
+  {
+   "t": "EGIE3",
+   "n": "Engie Brasil",
+   "a": [
+    "engie brasil",
+    "engie"
+   ],
+   "i": 100
+  },
+  {
+   "t": "CPFE3",
+   "n": "CPFL Energia",
+   "a": [
+    "cpfl"
+   ],
+   "i": 100
+  },
+  {
+   "t": "AURE3",
+   "n": "Auren",
+   "a": [
+    "auren"
+   ],
+   "i": 100
+  },
+  {
+   "t": "ISAE4",
+   "n": "ISA Energia",
+   "a": [
+    "isa energia",
+    "isa cteep"
+   ],
+   "i": 100
+  },
+  {
+   "t": "SAPR11",
+   "n": "Sanepar",
+   "a": [
+    "sanepar"
+   ],
+   "i": 100
+  },
+  {
+   "t": "IRBR3",
+   "n": "IRB Brasil",
+   "a": [
+    "irb"
+   ],
+   "i": 100
+  },
+  {
+   "t": "BRAP4",
+   "n": "Bradespar",
+   "a": [
+    "bradespar"
+   ],
+   "i": 100
+  },
+  {
+   "t": "IGTI11",
+   "n": "Iguatemi",
+   "a": [
+    "iguatemi"
+   ],
+   "i": 100
+  },
+  {
+   "t": "FLRY3",
+   "n": "Fleury",
+   "a": [
+    "fleury"
+   ],
+   "i": 100
+  },
+  {
+   "t": "HYPE3",
+   "n": "Hypera",
+   "a": [
+    "hypera"
+   ],
+   "i": 100
+  },
+  {
+   "t": "NATU3",
+   "n": "Natura",
+   "a": [
+    "natura"
+   ],
+   "i": 100
+  },
+  {
+   "t": "GGPS3",
+   "n": "GPS",
+   "a": [
+    "gps participacoes"
+   ],
+   "i": 100
+  },
+  {
+   "t": "ORVR3",
+   "n": "Orizon",
+   "a": [
+    "orizon"
+   ],
+   "i": 100
+  },
+  {
+   "t": "ECOR3",
+   "n": "EcoRodovias",
+   "a": [
+    "ecorodovias"
+   ],
+   "i": 100
+  },
+  {
+   "t": "SAUD3",
+   "n": "Bradsaúde",
+   "a": [
+    "bradsaude"
+   ],
+   "i": 100
+  },
+  {
+   "t": "SIMH3",
+   "n": "Simpar",
+   "a": [
+    "simpar"
+   ],
+   "i": 100
+  },
+  {
+   "t": "SLCE3",
+   "n": "SLC Agrícola",
+   "a": [
+    "slc agricola"
+   ],
+   "i": 100
+  },
+  {
+   "t": "SMTO3",
+   "n": "São Martinho",
+   "a": [
+    "sao martinho"
+   ],
+   "i": 100
+  },
+  {
+   "t": "POMO4",
+   "n": "Marcopolo",
+   "a": [
+    "marcopolo"
+   ],
+   "i": 100
+  },
+  {
+   "t": "RAPT4",
+   "n": "Randon",
+   "a": [
+    "randon"
+   ],
+   "i": 100
+  },
+  {
+   "t": "RECV3",
+   "n": "PetroReconcavo",
+   "a": [
+    "petroreconcavo"
+   ],
+   "i": 100
+  },
+  {
+   "t": "JHSF3",
+   "n": "JHSF",
+   "a": [
+    "jhsf"
+   ],
+   "i": 100
+  },
+  {
+   "t": "YDUQ3",
+   "n": "YDUQS",
+   "a": [
+    "yduqs"
+   ],
+   "i": 100
+  },
+  {
+   "t": "TEND3",
+   "n": "Tenda",
+   "a": [
+    "construtora tenda",
+    "tenda atacado"
+   ],
+   "i": 100
+  },
+  {
+   "t": "AZZA3",
+   "n": "Azzas 2154",
+   "a": [
+    "azzas"
+   ],
+   "i": 100
+  },
+  {
+   "t": "VAMO3",
+   "n": "Vamos",
+   "a": [
+    "vamos locacao"
+   ],
+   "i": 100
+  },
+  {
+   "t": "MOVI3",
+   "n": "Movida",
+   "a": [
+    "movida"
+   ],
+   "i": 100
+  },
+  {
+   "t": "MRVE3",
+   "n": "MRV",
+   "a": [
+    "mrv"
+   ],
+   "i": 100
+  },
+  {
+   "t": "VIVA3",
+   "n": "Vivara",
+   "a": [
+    "vivara"
+   ],
+   "i": 100
+  },
+  {
+   "t": "GMAT3",
+   "n": "Grupo Mateus",
+   "a": [
+    "grupo mateus"
+   ],
+   "i": 100
+  },
+  {
+   "t": "ALPA4",
+   "n": "Alpargatas",
+   "a": [
+    "alpargatas",
+    "havaianas"
+   ],
+   "i": 100
+  },
+  {
+   "t": "CBAV3",
+   "n": "CBA (Companhia Brasileira de Alumínio)",
+   "a": [
+    "companhia brasileira de aluminio"
+   ],
+   "i": 100
+  },
+  {
+   "t": "EZTC3",
+   "n": "EZTEC",
+   "a": [
+    "eztec",
+    "ez tec"
+   ],
+   "i": 100
+  },
+  {
+   "t": "INTB3",
+   "n": "Intelbras",
+   "a": [
+    "intelbras"
+   ],
+   "i": 100
+  },
+  {
+   "t": "MDNE3",
+   "n": "Moura Dubeux",
+   "a": [
+    "moura dubeux"
+   ],
+   "i": 100
+  },
+  {
+   "t": "BEEF3",
+   "n": "Minerva",
+   "a": [
+    "minerva",
+    "minerva foods"
+   ],
+   "i": 100
+  },
+  {
+   "t": "PGMN3",
+   "n": "Pague Menos",
+   "a": [
+    "pague menos"
+   ],
+   "i": 100
+  },
+  {
+   "t": "SBFG3",
+   "n": "Centauro (SBF)",
+   "a": [
+    "sbf group",
+    "grupo sbf"
+   ],
+   "i": 100
+  },
+  {
+   "t": "ANIM3",
+   "n": "Ânima",
+   "a": [
+    "anima educacao"
+   ],
+   "i": 100
+  },
+  {
+   "t": "CVCB3",
+   "n": "CVC",
+   "a": [
+    "cvc brasil",
+    "cvc"
+   ],
+   "i": 100
+  },
+  {
+   "t": "PLPL3",
+   "n": "Plano&Plano",
+   "a": [
+    "plano&plano"
+   ],
+   "i": 100
+  },
+  {
+   "t": "LWSA3",
+   "n": "Locaweb",
+   "a": [
+    "locaweb"
+   ]
+  },
+  {
+   "t": "CCRO3",
+   "n": "CCR",
+   "a": [
+    "ccr s.a"
+   ]
+  },
+  {
+   "t": "BRKM5",
+   "n": "Braskem",
+   "a": [
+    "braskem"
+   ]
+  },
+  {
+   "t": "RAIZ4",
+   "n": "Raízen",
+   "a": [
+    "raizen"
+   ]
+  },
+  {
+   "t": "PCAR3",
+   "n": "Pão de Açúcar",
+   "a": [
+    "pao de acucar"
+   ]
+  },
+  {
+   "t": "CRFB3",
+   "n": "Carrefour Brasil",
+   "a": [
+    "carrefour brasil"
+   ]
+  },
+  {
+   "t": "INBR32",
+   "n": "Banco Inter",
+   "a": [
+    "banco inter"
+   ]
+  },
+  {
+   "t": "ROXO34",
+   "n": "Nubank",
+   "a": [
+    "nubank"
+   ]
+  },
+  {
+   "t": "XPBR31",
+   "n": "XP Inc.",
+   "a": [
+    "xp inc"
+   ]
+  },
+  {
+   "t": "IVVB11",
+   "n": "ETF S&P 500 (IVVB11)",
+   "a": []
+  },
+  {
+   "t": "BOVA11",
+   "n": "ETF Ibovespa (BOVA11)",
+   "a": []
+  },
+  {
+   "t": "SMAL11",
+   "n": "ETF Small Caps (SMAL11)",
+   "a": []
+  },
+  {
+   "t": "AAPL34",
+   "n": "Apple (BDR)",
+   "a": [
+    "apple"
+   ]
+  },
+  {
+   "t": "MSFT34",
+   "n": "Microsoft (BDR)",
+   "a": [
+    "microsoft"
+   ]
+  },
+  {
+   "t": "NVDC34",
+   "n": "Nvidia (BDR)",
+   "a": [
+    "nvidia"
+   ]
+  },
+  {
+   "t": "AMZO34",
+   "n": "Amazon (BDR)",
+   "a": [
+    "amazon"
+   ]
+  },
+  {
+   "t": "GOGL34",
+   "n": "Alphabet/Google (BDR)",
+   "a": [
+    "alphabet",
+    "google"
+   ]
+  },
+  {
+   "t": "TSLA34",
+   "n": "Tesla (BDR)",
+   "a": [
+    "tesla"
+   ]
+  },
+  {
+   "t": "M1TA34",
+   "n": "Meta (BDR)",
+   "a": [
+    "meta platforms"
+   ]
+  },
+  {
+   "t": "HGLG11",
+   "n": "FII HGLG11",
+   "a": []
+  },
+  {
+   "t": "XPLG11",
+   "n": "FII XPLG11",
+   "a": []
+  },
+  {
+   "t": "KNRI11",
+   "n": "FII KNRI11",
+   "a": []
+  },
+  {
+   "t": "MXRF11",
+   "n": "FII MXRF11",
+   "a": []
+  },
+  {
+   "t": "XPML11",
+   "n": "FII XPML11",
+   "a": []
+  },
+  {
+   "t": "VISC11",
+   "n": "FII VISC11",
+   "a": []
+  },
+  {
+   "t": "BTLG11",
+   "n": "FII BTLG11",
+   "a": []
+  },
+  {
+   "t": "HGRU11",
+   "n": "FII HGRU11",
+   "a": []
+  },
+  {
+   "t": "KNCR11",
+   "n": "FII KNCR11",
+   "a": []
+  },
+  {
+   "t": "KNIP11",
+   "n": "FII KNIP11",
+   "a": []
+  },
+  {
+   "t": "CPTS11",
+   "n": "FII CPTS11",
+   "a": []
+  },
+  {
+   "t": "RBRR11",
+   "n": "FII RBRR11",
+   "a": []
+  },
+  {
+   "t": "VGIR11",
+   "n": "FII VGIR11",
+   "a": []
+  },
+  {
+   "t": "TRXF11",
+   "n": "FII TRXF11",
+   "a": []
+  },
+  {
+   "t": "HSML11",
+   "n": "FII HSML11",
+   "a": []
+  },
+  {
+   "t": "BRCO11",
+   "n": "FII BRCO11",
+   "a": []
+  },
+  {
+   "t": "ALZR11",
+   "n": "FII ALZR11",
+   "a": []
+  },
+  {
+   "t": "IRDM11",
+   "n": "FII IRDM11",
+   "a": []
+  },
+  {
+   "t": "HGCR11",
+   "n": "FII HGCR11",
+   "a": []
+  },
+  {
+   "t": "BCFF11",
+   "n": "FII BCFF11",
+   "a": []
+  },
+  {
+   "t": "GARE11",
+   "n": "FII GARE11",
+   "a": []
+  },
+  {
+   "t": "PVBI11",
+   "n": "FII PVBI11",
+   "a": []
+  },
+  {
+   "t": "JSRE11",
+   "n": "FII JSRE11",
+   "a": []
+  },
+  {
+   "t": "TGAR11",
+   "n": "FII TGAR11",
+   "a": []
+  },
+  {
+   "t": "XPCI11",
+   "n": "FII XPCI11",
+   "a": []
+  }
+ ]
+}
