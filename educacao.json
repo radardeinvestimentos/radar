@@ -1,0 +1,356 @@
+{
+ "_comment": "Conteúdo educacional (editável). Itens com \"confirmar\": true mostram o selo 'a confirmar'; apague a linha quando revisar. Blocos: cards, passos, destaque.",
+ "revisadoEm": "2026-10-23",
+ "aviso": "Conteúdo educacional para apoiar a conversa com o cliente. Não é recomendação de investimento. Rentabilidade passada não garante resultados futuros.",
+ "secoes": [
+  {
+   "id": "renda-fixa-carteira",
+   "titulo": "Como encaixar a renda fixa na carteira",
+   "resumo": "Ter pós-fixado, pré-fixado e inflação na carteira dá equilíbrio para diferentes cenários de mercado. A combinação ajuda a proteger o patrimônio, aproveitar oportunidades e construir uma alocação mais completa.",
+   "blocos": [
+    {
+     "tipo": "cards",
+     "titulo": "Os três indexadores",
+     "itens": [
+      {
+       "titulo": "Pós-fixado",
+       "tag": "CDI ou Selic",
+       "texto": "Acompanha o CDI ou a Selic. Importante para liquidez, reserva e cenários de juros altos."
+      },
+      {
+       "titulo": "Pré-fixado",
+       "tag": "Taxa travada",
+       "texto": "Trava uma taxa no momento da aplicação. Bom para previsibilidade e para cenários de queda de juros."
+      },
+      {
+       "titulo": "Inflação",
+       "tag": "IPCA +",
+       "texto": "Entrega uma taxa real acima do IPCA. Preserva o poder de compra no médio e no longo prazo."
+      }
+     ]
+    },
+    {
+     "tipo": "destaque",
+     "texto": "Cada indexador responde melhor a um cenário. O equilíbrio entre eles é o ponto de partida para uma alocação mais estratégica."
+    },
+    {
+     "tipo": "passos",
+     "titulo": "Em que etapa da jornada do cliente a renda fixa se encaixa",
+     "itens": [
+      {
+       "titulo": "Início da jornada: reserva de emergência (pós-fixado)",
+       "texto": "LFT e bancários com liquidez diária e pós-fixados.",
+       "pontos": [
+        "Para clientes que precisam de liquidez, segurança e previsibilidade.",
+        "O foco não é retorno: é proteção contra imprevistos.",
+        "Produtos de baixíssimo risco, perfeitos para a base da carteira."
+       ]
+      },
+      {
+       "titulo": "Construção de patrimônio: médio prazo (3, 5 ou 10 anos)",
+       "texto": "Crédito privado, emissão bancária e títulos públicos (pré, pós ou inflação).",
+       "pontos": [
+        "Indicados para a construção de patrimônio no médio prazo.",
+        "Permitem buscar retornos maiores com risco controlado.",
+        "A liquidez menor deixa de ser problema e passa a ser estratégia."
+       ]
+      },
+      {
+       "titulo": "Longo prazo: aposentadoria e objetivos de vida (10 anos ou mais)",
+       "texto": "NTN-B longa e crédito privado de longo prazo indexado à inflação.",
+       "pontos": [
+        "Focados em preservar o poder de compra no longo prazo.",
+        "Protegem contra a inflação (IPCA) por muitos anos.",
+        "O preço pode oscilar no curto prazo, mas entregam muito no horizonte longo."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "renda-variavel-base",
+   "titulo": "Renda variável: por que, o quê e em que momento",
+   "resumo": "Combinação de maior potencial de retorno, participação no crescimento econômico e renda passiva.",
+   "blocos": [
+    {
+     "tipo": "cards",
+     "titulo": "Por que renda variável",
+     "itens": [
+      {
+       "titulo": "Potencial de maior retorno",
+       "texto": "Em geral, os ativos de renda variável oferecem potencial de retorno maior que o da renda fixa. Isso se deve ao crescimento das empresas e à valorização das ações ao longo do tempo."
+      },
+      {
+       "titulo": "Participação no crescimento da economia",
+       "texto": "À medida que a economia cresce, as empresas tendem a prosperar, o que pode beneficiar os acionistas."
+      },
+      {
+       "titulo": "Dividendos",
+       "texto": "Os dividendos são uma fonte de renda passiva e podem ser reinvestidos para aumentar ainda mais o patrimônio."
+      }
+     ]
+    },
+    {
+     "tipo": "cards",
+     "titulo": "Tipos de renda variável",
+     "itens": [
+      {
+       "titulo": "Ações",
+       "texto": "Pequeno pedaço de uma empresa, negociado na bolsa de valores."
+      },
+      {
+       "titulo": "ETF",
+       "tag": "Exchange Traded Fund",
+       "texto": "Fundo de investimento negociado na bolsa que busca replicar o desempenho de um índice específico."
+      },
+      {
+       "titulo": "BDR",
+       "tag": "Brazilian Depositary Receipt",
+       "texto": "Ações de empresas estrangeiras negociadas na bolsa do Brasil, o que permite acesso a ações internacionais sem operar no exterior."
+      },
+      {
+       "titulo": "FII",
+       "tag": "Fundo imobiliário",
+       "texto": "Fundos de investimentos imobiliários negociados na bolsa de valores."
+      }
+     ]
+    },
+    {
+     "tipo": "passos",
+     "titulo": "Em que etapa da jornada a renda variável se encaixa",
+     "itens": [
+      {
+       "titulo": "Início da jornada: reserva de emergência",
+       "texto": "Nesse contexto, os investimentos de renda variável não são recomendados."
+      },
+      {
+       "titulo": "Construção de patrimônio: médio prazo (3, 5 ou 10 anos)",
+       "texto": "Espaço das operações estruturadas.",
+       "pontos": [
+        "Prazo de vencimento entre 6 meses e 2 anos.",
+        "Podem ser boas alternativas de alavancagem com risco controlado.",
+        "Não têm liquidez durante o período da operação."
+       ]
+      },
+      {
+       "titulo": "Longo prazo: aposentadoria e objetivos de vida (10 anos ou mais)",
+       "texto": "Espaço da carteira automatizada.",
+       "pontos": [
+        "Potencial de crescimento no longo prazo.",
+        "Disciplina que reduz decisões emocionais.",
+        "Rebalanceamento automático alinhado ao perfil.",
+        "Ganho de escala com o tempo e os juros compostos."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cenarios-carteira",
+   "titulo": "Cenários de carteira de renda variável",
+   "resumo": "Três situações que aparecem na análise de uma carteira e o que observar em cada uma.",
+   "blocos": [
+    {
+     "tipo": "cards",
+     "itens": [
+      {
+       "titulo": "Carteira sobreposta",
+       "tag": "Concentração",
+       "texto": "Concentração em um único setor.",
+       "pontos": [
+        "Quantidade de papéis",
+        "Exposição em cada papel",
+        "Dispersão setorial",
+        "Growth e dividendos"
+       ]
+      },
+      {
+       "titulo": "Carteira pulverizada",
+       "tag": "Muitos ativos",
+       "texto": "A pulverização é a distribuição dos investimentos em um grande número de ativos ou classes de ativos, de modo a evitar a concentração em poucos investimentos. Atenção aos riscos:",
+       "pontos": [
+        "Dificuldade de monitoramento",
+        "Diluição de retornos",
+        "Falta de foco",
+        "Complexidade na gestão",
+        "Risco de sobreposição"
+       ]
+      },
+      {
+       "titulo": "Carteira diversificada",
+       "tag": "Reduz o risco",
+       "texto": "Aloca recursos em diferentes papéis e setores. O objetivo é reduzir o risco total da carteira, aproveitando a correlação negativa ou baixa entre os ativos, o que pode melhorar a relação risco-retorno.",
+       "pontos": [
+        "Redução do risco",
+        "Melhor relação risco-retorno",
+        "Proteção contra a volatilidade do mercado",
+        "Exposição a oportunidades em diferentes setores",
+        "Redução da dependência do desempenho de ações individuais"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "como-apresentar",
+   "titulo": "Como apresentar uma tese de renda variável",
+   "resumo": "Explicar o cenário, conectar com um setor ou ação e propor a estrutura que transforma a tese em operação, com risco e retorno claros para o cliente.",
+   "blocos": [
+    {
+     "tipo": "passos",
+     "itens": [
+      {
+       "titulo": "1. Cenário",
+       "texto": "Comece contextualizando o cenário de mercado (juros, inflação, câmbio e cenário político) e seus impactos na Bolsa. Indique de forma simples se o ambiente é de alta, baixa ou maior volatilidade, sempre conectando com o horizonte de investimento do cliente.",
+       "pontos": [
+        "Qual é o cenário macro (Brasil e mundo)?",
+        "Como isso afeta a Bolsa e os índices?",
+        "Qual é a sua visão: alta, baixa ou lateralização?"
+       ]
+      },
+      {
+       "titulo": "2. Setor ou ação",
+       "texto": "Traga a tese micro: por que este setor ou ação específica deve se beneficiar desse cenário? Fale de fundamentos, resultados, posição competitiva e gatilhos de valorização.",
+       "pontos": [
+        "Por que este setor agora? (drivers de crescimento ou risco)",
+        "Por que esta empresa dentro do setor?",
+        "Quais são os principais catalisadores? (resultados, eventos, reformas etc.)"
+       ]
+      },
+      {
+       "titulo": "3. Estrutura",
+       "texto": "Apresente a estrutura de renda variável que melhor traduz a tese, explicando quanto o cliente pode ganhar, quanto pode perder e por quanto tempo a operação vai durar.",
+       "pontos": [
+        "Tipo de estrutura",
+        "Tese: alta ou baixa moderada do ativo",
+        "Ganho máximo e perda máxima (valores ou % estimados)",
+        "Prazo da operação (vencimento das opções)"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "estruturadas",
+   "titulo": "Operações estruturadas: o que são e quando usar",
+   "resumo": "Operações que combinam derivativos, para proteção ou especulação. Têm vencimento entre 6 meses e 2 anos e não têm liquidez durante o período da operação. Os trechos marcados como \"a confirmar\" são interpretação do conceito e merecem revisão antes de usar com clientes.",
+   "blocos": [
+    {
+     "tipo": "cards",
+     "itens": [
+      {
+       "titulo": "Collar",
+       "tag": "Proteção",
+       "texto": "Oferece proteção de 100% da queda do ativo, ao mesmo tempo em que permite participação limitada na alta. Essa estratégia não exige desembolso de caixa.",
+       "quando": "Quando o cliente tem uma posição e quer protegê-la da queda sem gastar caixa, aceitando abrir mão de parte da alta.",
+       "confirmar": true
+      },
+      {
+       "titulo": "Fence",
+       "tag": "Proteção",
+       "texto": "Oferece proteção parcial, até determinado patamar de queda do ativo, ao mesmo tempo em que permite participação limitada na alta.",
+       "quando": "Quando uma proteção parcial basta: o cliente tolera uma queda até certo patamar e mantém participação limitada na alta.",
+       "confirmar": true
+      },
+      {
+       "titulo": "RUBI (Return Under Barrier Investment)",
+       "tag": "Alavancagem",
+       "texto": "Oferece um ganho pré-determinado (cupom) desde que o ativo nunca atinja um determinado patamar de queda, definido na própria operação. O cliente pode ganhar o cupom mesmo em cenário de queda moderada da ação.",
+       "quando": "Quando a visão é de que o ativo não vai cair até o patamar em nenhum momento da operação. A diferença para a Smart Coupon é que aqui a barreira vale durante todo o período.",
+       "confirmar": true
+      },
+      {
+       "titulo": "Smart Coupon",
+       "tag": "Especulação",
+       "texto": "Oferece um ganho pré-determinado (cupom) desde que o ativo não atinja um determinado patamar de queda na data do vencimento, definido na própria operação. O cliente pode ganhar o cupom mesmo em cenário de queda moderada da ação.",
+       "quando": "Quando a visão é de que o ativo não estará abaixo do patamar na data do vencimento. A barreira só conta no vencimento, e não durante a operação.",
+       "confirmar": true
+      },
+      {
+       "titulo": "Booster",
+       "tag": "Sofisticação",
+       "texto": "Gera ganho dobrado na alta do ativo até determinado patamar de preço. É uma maneira de acelerar o ganho.",
+       "quando": "Pode ser ideal para o cliente que acredita em alta moderada do ativo, ou que vem acumulando perdas e busca a recuperação do prejuízo nessa alta."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "carteira-automatizada",
+   "titulo": "Carteira automatizada",
+   "resumo": "Alocação completa de renda variável para o cliente, seguindo uma estratégia específica e monitorada por uma equipe de especialistas, com o objetivo de identificar as melhores oportunidades e superar um benchmark de referência para cada estratégia.",
+   "blocos": [
+    {
+     "tipo": "lista",
+     "titulo": "Benefícios",
+     "itens": [
+      "Praticidade",
+      "Transparência",
+      "Liquidez",
+      "Proventos e eventos",
+      "Gestão profissional"
+     ]
+    },
+    {
+     "tipo": "cards",
+     "titulo": "Exemplos de estratégias",
+     "itens": [
+      {
+       "titulo": "Top Dividendos II",
+       "tag": "Dividendos Brasil",
+       "texto": "Exemplo de carteira da estratégia Dividendos Brasil."
+      },
+      {
+       "titulo": "Bunker",
+       "tag": "Quantitativa",
+       "texto": "Exemplo de carteira da estratégia Quantitativa."
+      },
+      {
+       "titulo": "Global Investo ETFs",
+       "tag": "Multiestratégia",
+       "texto": "Exemplo de carteira da estratégia Multiestratégia."
+      }
+     ]
+    },
+    {
+     "tipo": "destaque",
+     "texto": "Para o longo prazo: potencial de crescimento, disciplina que reduz decisões emocionais, rebalanceamento automático alinhado ao perfil e ganho de escala com o tempo e os juros compostos."
+    }
+   ]
+  },
+  {
+   "id": "mesa-rv",
+   "titulo": "Mesa de renda variável: quando acionar",
+   "resumo": "Gestão ativa e inteligência na estratégia: acompanhamento próximo, com estratégias sofisticadas para proteção, alavancagem, especulação e arbitragem.",
+   "blocos": [
+    {
+     "tipo": "cards",
+     "itens": [
+      {
+       "titulo": "Quando acionar a Mesa",
+       "texto": "Ao encontrar uma destas oportunidades:",
+       "pontos": [
+        "Cliente com posição em renda variável a partir de R$ 100 mil.",
+        "Posição relevante em um único papel.",
+        "Cliente com apetite para estruturadas (a partir de R$ 15 mil)."
+       ]
+      },
+      {
+       "titulo": "Por que acionar",
+       "texto": "Expertise e gestão profissional."
+      },
+      {
+       "titulo": "Como acionar",
+       "texto": "Alinhar com o Broker."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

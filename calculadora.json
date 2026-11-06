@@ -1,0 +1,8 @@
+{
+  "_comment": "Premissas iniciais da calculadora. Revise quando o Copom mudar a Selic. CDI costuma ficar cerca de 0,10 ponto abaixo da Selic. Pode editar este arquivo no GitHub.",
+  "revisadoEm": "2026-10-19",
+  "selic": 13.75,
+  "cdi": 13.65,
+  "ipca": 4.5,
+  "nota": "Selic de 13,75% a.a. conforme decisão do Copom de 16/09/2026 (a próxima reunião está na Agenda). O IPCA esperado de 4,5% a.a. é um valor de partida: ajuste conforme o Focus mostrado na aba Leituras."
+}
