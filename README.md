@@ -134,3 +134,4 @@ node src/collect.js # gera public/api/ localmente (precisa de internet livre)
 - A renda fixa Brasil incluída é projetada (líquida de IR, IOF e custódia). Outras modalidades entram como "outras posições", só para medir a concentração.
 - Os modelos Conservadora, Moderada e Sofisticada ficam em `public/data/carteiras-modelo.json` (percentuais, caixa mínimo e tolerância); no site todos os campos são editáveis. Os avisos em vermelho (*) aparecem abaixo do gráfico de concentração quando uma modalidade foge da meta além da tolerância ou o caixa fica abaixo do mínimo.
 - A lógica fica em `public/carteira.js` (testada em `test/pacotes.test.js`).
+- Na comparação, a carteira (soma dos investimentos marcados "Incluir na carteira") vira uma linha única e pode ser comparada com investimentos isolados ("Comparar"). Cada investimento pode ter valor e prazo próprios; vazio usa o padrão do topo.

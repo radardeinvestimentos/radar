@@ -496,15 +496,18 @@
     const st = { selic: fx(cfg.selic), cdi: fx(cfg.cdi), ipca: fx(cfg.ipca), valor: '100.000', meses: '24', modo: 'valor', bruto: false, ...saved };
     if (!Array.isArray(st.cenarios) || !st.cenarios.length) st.cenarios = [novoCenario(C, 'cdb-pos', 0)];
     st.cenarios = st.cenarios.slice(0, MAX_CARDS);
+    const migrar = !st.v3;
+    st.v3 = true;
     st.cenarios.forEach((sc, i) => {
       if (sc.cmp == null) sc.cmp = i < MAX_COMPARA;
       sc.inc = !!sc.inc; sc.caixa = !!sc.caixa; sc.mod = sc.mod || '';
-      if (sc.cv == null || sc.cv === '') sc.cv = st.valor;
-      if (sc.cm == null || sc.cm === '') sc.cm = st.meses;
+      if (migrar) { sc.cv = ''; sc.cm = ''; }
+      sc.cv = sc.cv == null ? '' : sc.cv; sc.cm = sc.cm == null ? '' : sc.cm;
+      if (sc.inc) sc.cmp = false;
     });
-    if (!st.cenarios.some((sc) => sc.cmp)) st.cenarios[0].cmp = true;
+    const phRefs = [];
 
-    box.append(h('div', { class: 'note', text: 'Simulação com as premissas que você informar, para conversar com o cliente. Compare até 4 investimentos lado a lado (marque "Comparar") e, se quiser a visão 360°, inclua cada um na carteira com seu próprio valor e prazo (mais abaixo). O gráfico de comparação mostra quanto sobraria líquido se o cliente resgatasse em cada data, já com o IR regressivo, o IOF dos 30 primeiros dias e a custódia da B3. Não consulta taxas de mercado, não inclui come-cotas, carência nem marcação a mercado (a venda antes do vencimento de títulos públicos e crédito privado pode ter preço diferente), e as taxas dos modelos são só exemplos. Não é recomendação de investimento.' }));
+    box.append(h('div', { class: 'note', text: 'Simulação com as premissas que você informar, para conversar com o cliente. Compare até 4 linhas lado a lado: investimentos isolados ("Comparar") e/ou a carteira inteira, que soma os investimentos marcados "Incluir na carteira", cada um com seu valor e prazo. O gráfico de comparação mostra quanto sobraria líquido se o cliente resgatasse em cada data, já com o IR regressivo, o IOF dos 30 primeiros dias e a custódia da B3. Não consulta taxas de mercado, não inclui come-cotas, carência nem marcação a mercado (a venda antes do vencimento de títulos públicos e crédito privado pode ter preço diferente), e as taxas dos modelos são só exemplos. Não é recomendação de investimento.' }));
 
     // premissas comuns
     const fields = {};
@@ -521,21 +524,25 @@
       mkShared('selic', 'Selic (% a.a.)', cfg.revisadoEm ? `Padrão revisado em ${fmtBR(cfg.revisadoEm)}` : ''),
       mkShared('cdi', 'CDI (% a.a.)', 'Costuma ficar ~0,10 abaixo da Selic'),
       mkShared('ipca', 'IPCA esperado (% a.a.)', fIpca ? `Focus: ${fIpca}` : ''),
-      mkShared('valor', 'Valor aplicado (R$)'),
-      mkShared('meses', 'Prazo (meses)')));
+      mkShared('valor', 'Valor aplicado (R$)', 'Padrão: vale para quem não tiver valor próprio'),
+      mkShared('meses', 'Prazo (meses)', 'Padrão: vale para quem não tiver prazo próprio')));
 
     // cartões de investimento
     const cards = h('div', { class: 'scs' });
     const addBtn = h('button', { class: 'btn', type: 'button', onclick: () => {
       if (st.cenarios.length >= MAX_CARDS) return;
       const sc = novoCenario(C, ['cdb-pos', 'lci-lca', 'ipca-mais', 'pre'][st.cenarios.length % 4], st.cenarios.length);
-      sc.cmp = st.cenarios.filter((x) => x.cmp).length < MAX_COMPARA; sc.cv = st.valor; sc.cm = st.meses;
+      sc.cmp = totalComparados() < MAX_COMPARA; sc.cv = ''; sc.cm = '';
       st.cenarios.push(sc); buildCards(); update();
     } }, '+ Adicionar investimento');
     box.append(cards, h('div', { class: 'addrow' }, addBtn));
 
+    const totalComparados = () => st.cenarios.filter((x) => x.cmp).length + (st.cenarios.some((x) => x.inc) ? 1 : 0);
     function buildCards() {
       cards.replaceChildren();
+      phRefs.length = 0;
+      const temCart = st.cenarios.some((x) => x.inc);
+      const cmpIdxAll = st.cenarios.map((x, k) => (x.cmp && !x.inc ? k : -1)).filter((k) => k >= 0);
       st.cenarios.forEach((sc, i) => {
         const dyn = h('span', { text: (INDEXADORES.find((x) => x[0] === sc.indexador) || INDEXADORES[0])[2] });
         const taxa = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': `Taxa do investimento ${LETRAS[i]}` });
@@ -571,18 +578,19 @@
           Object.assign(sc, { preset: pr.id, indexador: pr.indexador, tributacao: pr.tributacao, taxa: String(pr.taxa).replace('.', ','), custodiaB3: !!pr.custodiaB3 });
           buildCards(); update();
         });
-        const cmpIdx = st.cenarios.map((x, k) => (x.cmp ? k : -1)).filter((k) => k >= 0);
-        const nCmp = cmpIdx.length;
+        const nCmp = totalComparados();
         const cmpCb = h('input', { type: 'checkbox', 'aria-label': `Comparar o investimento ${LETRAS[i]} no gráfico` });
         cmpCb.checked = !!sc.cmp; cmpCb.disabled = !sc.cmp && nCmp >= MAX_COMPARA;
+        const cmpLbl = h('label', { class: 'chk-inline' }, cmpCb, h('span', { text: 'Comparar' }));
+        cmpLbl.hidden = !!sc.inc;
         cmpCb.addEventListener('change', () => { sc.cmp = cmpCb.checked; buildCards(); update(); });
         const incCb = h('input', { type: 'checkbox', 'aria-label': `Incluir o investimento ${LETRAS[i]} na carteira` });
         incCb.checked = !!sc.inc;
-        incCb.addEventListener('change', () => { sc.inc = incCb.checked; carteiraRow.classList.toggle('off', !sc.inc); update(); });
+        incCb.addEventListener('change', () => { sc.inc = incCb.checked; sc.cmp = sc.inc ? false : totalComparados() < MAX_COMPARA; buildCards(); update(); });
         const cv = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': `Valor do investimento ${LETRAS[i]} na carteira` });
-        cv.value = sc.cv; cv.addEventListener('input', () => { sc.cv = cv.value; update(); });
+        cv.value = sc.cv; cv.placeholder = st.valor; phRefs.push([cv, 'valor']); cv.addEventListener('input', () => { sc.cv = cv.value; update(); });
         const cm = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': `Prazo do investimento ${LETRAS[i]} na carteira, em meses` });
-        cm.value = sc.cm; cm.addEventListener('input', () => { sc.cm = cm.value; update(); });
+        cm.value = sc.cm; cm.placeholder = st.meses; phRefs.push([cm, 'meses']); cm.addEventListener('input', () => { sc.cm = cm.value; update(); });
         const auto = C && window.RadarCarteira ? window.RadarCarteira.modalidadeDe(sc.indexador) : 'pos';
         const MOD3 = [['pos', 'Pós-fixado'], ['infl', 'Inflação'], ['pre', 'Prefixado']];
         const modSel = h('select', { 'aria-label': `Modalidade do investimento ${LETRAS[i]}` }, h('option', { value: '', text: `Automática: ${MOD3.find((m) => m[0] === auto)[1]}` }), MOD3.map(([v, l]) => h('option', { value: v, text: l })));
@@ -593,18 +601,18 @@
         caixaLbl.hidden = (sc.mod || auto) !== 'pos';
         modSel.addEventListener('change', () => { sc.mod = modSel.value; caixaLbl.hidden = (sc.mod || auto) !== 'pos'; if (caixaLbl.hidden) { sc.caixa = false; caixaCb.checked = false; } update(); });
         const carteiraRow = h('div', { class: `cart-row${sc.inc ? '' : ' off'}` },
-          h('div', { class: 'cart-cap', text: 'Na carteira' }),
+          h('div', { class: 'cart-cap', text: 'Valor, prazo e carteira (vazio = usa o padrão de cima)' }),
           h('div', { class: 'cgrid sm' },
-            h('label', { class: 'field cf' }, h('span', { text: 'Valor na carteira (R$)' }), cv),
-            h('label', { class: 'field cf' }, h('span', { text: 'Prazo na carteira (meses)' }), cm),
+            h('label', { class: 'field cf' }, h('span', { text: 'Valor deste investimento (R$)' }), cv),
+            h('label', { class: 'field cf' }, h('span', { text: 'Prazo deste investimento (meses)' }), cm),
             h('label', { class: 'field cf' }, h('span', { text: 'Modalidade' }), modSel),
             caixaLbl));
         const head = h('div', { class: 'sc-h' },
-          h('span', { class: 'sc-key', style: `background:${sc.cmp ? CORES[cmpIdx.indexOf(i)] : 'var(--muted)'}` }, LETRAS[i]),
+          h('span', { class: 'sc-key', style: `background:${sc.inc ? CORES[0] : sc.cmp ? CORES[(temCart ? 1 : 0) + cmpIdxAll.indexOf(i)] : 'var(--muted)'}` }, LETRAS[i]),
           h('b', { text: `Investimento ${LETRAS[i]}` }),
-          h('label', { class: 'chk-inline' }, cmpCb, h('span', { text: 'Comparar' })),
+          cmpLbl,
           h('label', { class: 'chk-inline' }, incCb, h('span', { text: 'Incluir na carteira' })),
-          st.cenarios.length > 1 ? h('button', { class: 'btn small', type: 'button', 'aria-label': `Remover investimento ${LETRAS[i]}`, onclick: () => { st.cenarios.splice(i, 1); if (!st.cenarios.some((x) => x.cmp)) st.cenarios[0].cmp = true; buildCards(); update(); } }, 'Remover') : null);
+          st.cenarios.length > 1 ? h('button', { class: 'btn small', type: 'button', 'aria-label': `Remover investimento ${LETRAS[i]}`, onclick: () => { st.cenarios.splice(i, 1); buildCards(); update(); } }, 'Remover') : null);
         cards.append(h('div', { class: 'sc' }, head, h('div', { class: 'cgrid sm' },
           h('label', { class: 'field cf' }, h('span', { text: 'Modelo' }), modelo),
           h('label', { class: 'field cf' }, h('span', { text: 'Indexador' }), idx),
@@ -625,25 +633,56 @@
     box.append(cartBox);
 
     const faixas = state.calcCfg?.faixasIR;
-    const paramsOf = (sc) => ({ indexador: sc.indexador, tributacao: sc.tributacao, custodiaB3: !!sc.custodiaB3, taxa: sc.indexador === 'poupanca' ? 0 : parseNum(sc.taxa), selic: parseNum(st.selic), cdi: parseNum(st.cdi), ipca: parseNum(st.ipca), valor: parseNum(st.valor), meses: parseNum(st.meses), outrasTaxas: parseNum(sc.outrasTaxas) || 0 });
+    const paramsOf = (sc) => ({ indexador: sc.indexador, tributacao: sc.tributacao, custodiaB3: !!sc.custodiaB3, taxa: sc.indexador === 'poupanca' ? 0 : parseNum(sc.taxa), selic: parseNum(st.selic), cdi: parseNum(st.cdi), ipca: parseNum(st.ipca), valor: parseNum(String(sc.cv ?? '').trim() === '' ? st.valor : sc.cv), meses: parseNum(String(sc.cm ?? '').trim() === '' ? st.meses : sc.cm), outrasTaxas: parseNum(sc.outrasTaxas) || 0 });
     const invalido = (P) => ['taxa', 'selic', 'cdi', 'ipca', 'valor', 'meses'].find((k) => !Number.isFinite(P[k]) || ((k === 'valor' || k === 'meses') && P[k] <= 0));
     const row = (k, v) => h('div', { class: 'dr' }, h('span', { text: k }), h('b', { text: v }));
 
     function update() {
       store.set('calc2', JSON.stringify(st));
+      phRefs.forEach(([el, k]) => { el.placeholder = st[k]; });
       if (cart) cart.update();
-      const itens = st.cenarios.map((sc, i) => ({ sc, i, P: paramsOf(sc), nome: nomeCenario(C, sc) })).filter((it) => it.sc.cmp);
-      itens.forEach((it, k) => { it.cor = CORES[k]; });
-      const bad = itens.find((it) => invalido(it.P));
+      const K = window.RadarCarteira;
+      const todos = st.cenarios.map((sc, i) => ({ sc, i, P: paramsOf(sc), nome: nomeCenario(C, sc), letra: LETRAS[i] }));
+      const membros = todos.filter((it) => it.sc.inc);
+      const avulsos = todos.filter((it) => it.sc.cmp && !it.sc.inc);
+      const bad = [...membros, ...avulsos].find((it) => invalido(it.P));
       if (bad) {
         last = null;
-        res.replaceChildren(h('p', { class: 'frase', text: 'Preencha os campos com números (use vírgula para decimais) para ver o resultado.' }));
+        const ROT = { taxa: `taxa do investimento ${bad.letra}`, selic: 'Selic', cdi: 'CDI', ipca: 'IPCA esperado', valor: `Valor (maior que zero) do investimento ${bad.letra} ou o valor padrão`, meses: `Prazo em meses (maior que zero) do investimento ${bad.letra} ou o prazo padrão` };
+        res.replaceChildren(h('p', { class: 'frase', text: `Preencha com números (use vírgula para decimais): ${ROT[invalido(bad.P)]}. O campo está vazio ou inválido.` }));
         return;
       }
-      for (const it of itens) it.r = C.calcular(it.P, faixas);
+      if (!membros.length && !avulsos.length) {
+        last = null;
+        res.replaceChildren(h('p', { class: 'frase', text: 'Marque "Comparar" em um investimento, ou "Incluir na carteira" em um ou mais, para ver o resultado.' }));
+        return;
+      }
+      const ipca0 = (membros[0] || avulsos[0]).P.ipca;
+      // entidades comparadas: a carteira (soma dos incluídos) e os investimentos isolados
+      const itens = [];
+      for (const it of avulsos) { it.r = C.calcular(it.P, faixas); it.pts = C.serie(it.P, faixas); it.valor = it.P.valor; it.dias = it.r.dias; it.cart = false; }
+      if (membros.length) {
+        for (const it of membros) { it.r = C.calcular(it.P, faixas); it.pts = C.serie(it.P, faixas); }
+        const valor = membros.reduce((a, m) => a + m.P.valor, 0);
+        const sum = (f) => membros.reduce((a, m) => a + f(m.r), 0);
+        const dias = Math.max(...membros.map((m) => m.r.dias));
+        const final = sum((r) => r.final), rendBruto = sum((r) => r.rendBruto), rendLiq = final - valor;
+        const taxaLiqAA = (Math.pow(final / valor, 365 / dias) - 1) * 100;
+        const taxaBrutaAA = (Math.pow((valor + rendBruto) / valor, 365 / dias) - 1) * 100;
+        const ganhoReal = membros.reduce((a, m) => a + m.r.ganhoReal, 0);
+        const ir = sum((r) => r.ir), iof = sum((r) => r.iof);
+        const r = { final, rendLiq, rendBruto, ir, iof, dias, taxaLiqAA, taxaBrutaAA, ganhoReal, reposicaoInflacao: rendLiq - ganhoReal, jurosReaisAA: ((1 + taxaLiqAA / 100) / (1 + ipca0 / 100) - 1) * 100, isento: membros.every((m) => m.r.isento), aliq: 0 };
+        const meses = Math.max(...membros.map((m) => m.P.meses));
+        const nome = membros.length === 1 ? `Carteira (${membros[0].letra})` : `Carteira (${membros.map((m) => m.letra).join(' + ')})`;
+        itens.unshift({ cart: true, membros, letra: 'Σ', nome, r, valor, dias, P: { ...membros[0].P, valor, meses, ipca: ipca0 }, pts: K.somarSeries(membros.map((m) => ({ valor: m.P.valor, pts: m.pts })), ipca0) });
+      }
+      itens.push(...avulsos);
+      itens.forEach((it, k) => { it.cor = CORES[k]; });
       last = itens;
       const P0 = itens[0].P;
       const parts = [];
+      if (membros.length) parts.push(h('p', { class: 'small quiet', text: `A carteira soma os investimentos marcados "Incluir na carteira" (${membros.map((m) => `${m.letra}: ${brl0.format(m.P.valor)}`).join(', ')}). As "outras posições" não entram aqui porque não têm projeção.` }));
+      const mesmosTermos = itens.every((it) => Math.abs(it.valor - itens[0].valor) < 0.005 && it.dias === itens[0].dias);
 
       if (itens.length === 1) {
         const { r, P } = itens[0];
@@ -652,59 +691,71 @@
           h('div', { class: 'stat' }, h('span', { class: 'sl', text: 'Rendimento líquido' }), h('b', { class: 'sv', text: brl0.format(r.rendLiq) })),
           h('div', { class: 'stat' }, h('span', { class: 'sl', text: 'Valor final líquido' }), h('b', { class: 'sv', text: brl0.format(r.final) })),
           h('div', { class: 'stat' }, h('span', { class: 'sl', text: 'Ganho real (em R$ de hoje)' }), h('b', { class: 'sv', text: brl0.format(r.ganhoReal) }))));
+        const ehC = itens[0].cart;
         parts.push(h('div', { class: 'detail' },
+          row('Valor aplicado', brl2.format(itens[0].valor)),
           row('Prazo', `${num(P.meses, P.meses % 1 ? 1 : 0)} meses (${r.dias} dias)`),
           row('Rendimento bruto', brl2.format(r.rendBruto)),
           r.iof > 0 ? row('IOF (resgate com menos de 30 dias)', `− ${brl2.format(r.iof)}`) : null,
-          row(r.isento ? 'Imposto de renda' : `Imposto de renda (${num(r.aliq, 1)}%)`, r.isento ? 'isento' : `− ${brl2.format(r.ir)}`),
+          row(r.isento ? 'Imposto de renda' : ehC ? 'Imposto de renda (soma)' : `Imposto de renda (${num(r.aliq, 1)}%)`, r.isento ? 'isento' : `− ${brl2.format(r.ir)}`),
           row('Taxa bruta (a.a.)', pc(r.taxaBrutaAA)),
           row('Taxa líquida (a.a.)', pc(r.taxaLiqAA))));
-        parts.push(h('p', { class: 'frase', text: `Com ${num(P.ipca)}% de inflação ao ano, o rendimento líquido de ${brl0.format(r.rendLiq)} tem juro real de ${pc(r.jurosReaisAA)} ao ano: dos ${brl0.format(r.rendLiq)}, ${brl0.format(r.reposicaoInflacao)} apenas repõem a inflação e ${brl0.format(r.ganhoReal)} são ganho real, em dinheiro de hoje.` }));
-        parts.push(h('p', { class: 'equiv', text: `Equivalência: ${equivText(r)}` }));
+        parts.push(h('p', { class: 'frase', text: `Com ${num(P.ipca)}% de inflação ao ano, o rendimento líquido de ${brl0.format(r.rendLiq)} tem juro real de ${pc(r.jurosReaisAA)} ao ano: dos ${brl0.format(r.rendLiq)}, ${brl0.format(r.reposicaoInflacao)} apenas repõem a inflação e ${brl0.format(r.ganhoReal)} são ganho real, em reais de hoje.` }));
+        if (!ehC) parts.push(h('p', { class: 'equiv', text: `Equivalência: ${equivText(r)}` }));
       } else {
-        const melhor = itens.reduce((a, b) => (b.r.final > a.r.final ? b : a));
-        const pior = itens.reduce((a, b) => (b.r.final < a.r.final ? b : a));
+        const melhor = itens.reduce((a, b) => (b.r.taxaLiqAA > a.r.taxaLiqAA ? b : a));
+        const pior = itens.reduce((a, b) => (b.r.taxaLiqAA < a.r.taxaLiqAA ? b : a));
         const rows = itens.map((it) => h('tr', { class: it === melhor ? 'best' : '' },
-          h('td', { class: 'ativo' }, h('span', { class: 'sc-key', style: `background:${it.cor}` }, LETRAS[it.i]), ` ${it.nome}`, it === melhor ? badge('maior retorno líquido', 'on') : null),
+          h('td', { class: 'ativo' }, h('span', { class: 'sc-key', style: `background:${it.cor}` }, it.letra), ` ${it.nome}`, it === melhor ? badge('maior retorno líquido', 'on') : null),
+          h('td', { class: 'r', text: brl0.format(it.valor) }),
           h('td', { class: 'r', text: brl0.format(it.r.final) }),
           h('td', { class: 'r', text: brl0.format(it.r.rendLiq) }),
-          h('td', { class: 'r', text: it.r.isento ? 'isento' : `${brl0.format(it.r.ir + it.r.iof)} (${num(it.r.aliq, 1)}%)` }),
+          h('td', { class: 'r', text: it.r.isento ? 'isento' : it.cart ? `${brl0.format(it.r.ir + it.r.iof)}` : `${brl0.format(it.r.ir + it.r.iof)} (${num(it.r.aliq, 1)}%)` }),
           h('td', { class: 'r', text: pc(it.r.taxaLiqAA) }),
           h('td', { class: 'r', text: pc(it.r.jurosReaisAA) }),
           h('td', { class: 'r', text: brl0.format(it.r.ganhoReal) })));
         parts.push(h('div', { class: 'tblw' }, h('table', { class: 'tbl cmp' },
-          h('thead', {}, h('tr', {}, ['Investimento', 'Valor final líquido', 'Rendimento líquido', 'IR e IOF (alíquota)', 'Taxa líquida a.a.', 'Juro real a.a.', 'Ganho real (R$ de hoje)'].map((c, k) => h('th', { class: k ? 'r' : '', text: c })))),
+          h('thead', {}, h('tr', {}, ['Investimento', 'Valor aplicado', 'Valor final líquido', 'Rendimento líquido', 'IR e IOF', 'Taxa líquida a.a.', 'Juro real a.a.', 'Ganho real (R$ de hoje)'].map((c, k) => h('th', { class: k ? 'r' : '', text: c })))),
           h('tbody', {}, rows))));
         const dif = melhor.r.final - pior.r.final;
-        parts.push(h('p', { class: 'frase', text: `Em ${num(P0.meses, P0.meses % 1 ? 1 : 0)} meses, com ${num(P0.ipca)}% de inflação ao ano, o investimento ${LETRAS[melhor.i]} (${melhor.nome}) entrega ${brl0.format(dif)} a mais que o ${LETRAS[pior.i]} (${pior.nome}) depois de IR e IOF, ${num((dif / pior.r.final) * 100, 1)}% sobre o valor final do ${LETRAS[pior.i]}. A conta vale só para este prazo: veja no gráfico como a diferença muda se o cliente resgatar antes.` }));
-        parts.push(h('details', { class: 'eqd' }, h('summary', { text: 'Equivalência entre isento e tributado' }), itens.map((it) => h('p', { class: 'equiv', text: `${LETRAS[it.i]}: ${equivText(it.r)}` }))));
+        const quem = (it) => (it.cart ? `a ${it.nome}` : `o investimento ${it.letra} (${it.nome})`);
+        parts.push(h('p', { class: 'frase', text: mesmosTermos
+          ? `Em ${num(P0.meses, P0.meses % 1 ? 1 : 0)} meses, com ${num(P0.ipca)}% de inflação ao ano, ${quem(melhor)} entrega ${brl0.format(dif)} a mais que ${quem(pior)} depois de IR e IOF (${num((dif / pior.r.final) * 100, 1)}% sobre o valor final do menor).`
+          : `Com valores e prazos diferentes, a comparação justa é pela taxa líquida: ${melhor.letra} (${melhor.nome}) tem ${pc(melhor.r.taxaLiqAA)} ao ano, contra ${pc(pior.r.taxaLiqAA)} do ${pior.letra} (${pior.nome}). Cada um para de render no seu vencimento, sem reinvestimento.` }));
+        parts.push(h('details', { class: 'eqd' }, h('summary', { text: 'Equivalência entre isento e tributado' }), itens.map((it) => it.cart
+          ? it.membros.map((m) => h('p', { class: 'equiv', text: `${m.letra}: ${equivText(m.r)}` }))
+          : h('p', { class: 'equiv', text: `${it.letra}: ${equivText(it.r)}` }))));
       }
 
-      // gráfico
+      // gráfico (mesma grade de dias para todos; depois do vencimento o valor líquido fica parado)
       const CH = window.RadarChart;
       if (CH) {
-        const series = itens.map((it) => ({ id: LETRAS[it.i], nome: `${LETRAS[it.i]} · ${it.nome}`, cor: it.cor, pts: C.serie(it.P, faixas) }));
+        const grade = [...new Set(itens.flatMap((it) => it.pts.map((p) => p.dias)))].sort((a, b) => a - b);
+        const series = itens.map((it) => ({ id: it.letra, nome: `${it.letra} · ${it.nome}`, cor: it.cor, valor: it.valor, pts: K.somarSeries([{ valor: it.valor, pts: it.pts }], ipca0, grade) }));
         const valor = st.modo === 'valor';
         const dados = series.map((s) => ({ id: s.id, nome: s.nome, cor: s.cor, pontos: s.pts.map((p) => ({ dias: p.dias, y: valor ? p.liquido : p.rentLiqPct, yBruto: valor ? p.bruto : p.rentBrutaPct })) }));
-        const ref = { nome: `Inflação (IPCA ${num(P0.ipca)}% a.a.)`, pontos: series[0].pts.map((p) => ({ dias: p.dias, y: valor ? p.inflacao : (p.inflacao / P0.valor - 1) * 100 })) };
+        const ref = { nome: `Inflação (IPCA ${num(ipca0)}% a.a.)`, pontos: series[0].pts.map((p) => ({ dias: p.dias, y: valor ? p.inflacao : (p.inflacao / series[0].valor - 1) * 100 })) };
         const modos = pills([['valor', 'Valor (R$)'], ['pct', 'Rentabilidade (%)']], st.modo, (v) => { st.modo = v; update(); });
         const brutoCb = h('input', { type: 'checkbox' });
         brutoCb.checked = !!st.bruto;
         brutoCb.addEventListener('change', () => { st.bruto = brutoCb.checked; update(); });
         parts.push(h('h3', { class: 'sh', text: 'Evolução ao longo do prazo (líquida de IR e IOF)' }));
         parts.push(h('div', { class: 'chart-ctl' }, modos, h('label', { class: 'chk-inline' }, brutoCb, h('span', { text: 'Mostrar também antes de IR e IOF (linha pontilhada)' }))));
-        parts.push(CH.render({ compacto: window.matchMedia('(max-width: 720px)').matches, series: dados, ref, mostrarBruto: !!st.bruto, fmtY: valor ? brlCompact : (n) => `${num(n, 1)}%`, fmtTip: valor ? (n) => brl0.format(n) : (n) => pc(n), titulo: `Evolução líquida de ${series.map((s) => s.nome).join(', ')} em ${num(P0.meses, 0)} meses` }));
-        parts.push(h('div', { class: 'legend' }, series.map((s, k) => h('span', { class: 'lg' }, h('i', { class: 'lgk', style: `background:${s.cor}` }), s.nome)), h('span', { class: 'lg' }, h('i', { class: 'lgk ref' }), ref.nome)));
+        parts.push(CH.render({ compacto: window.matchMedia('(max-width: 720px)').matches, series: dados, ref, mostrarBruto: !!st.bruto, fmtY: valor ? brlCompact : (n) => `${num(n, 1)}%`, fmtTip: valor ? (n) => brl0.format(n) : (n) => pc(n), titulo: `Evolução líquida de ${series.map((s) => s.nome).join(', ')}` }));
+        parts.push(h('div', { class: 'legend' }, series.map((s) => h('span', { class: 'lg' }, h('i', { class: 'lgk', style: `background:${s.cor}` }, ''), s.nome)), h('span', { class: 'lg' }, h('i', { class: 'lgk ref' }), ref.nome)));
+        if (valor && !mesmosTermos) parts.push(h('p', { class: 'small quiet', text: 'As linhas têm valores aplicados diferentes (a linha de inflação usa o valor do primeiro item). Para comparar de forma justa, use "Rentabilidade (%)".' }));
         parts.push(h('p', { class: 'small quiet', text: 'Cada ponto mostra o valor líquido se o resgate fosse naquela data. Os degraus acontecem nas viradas da tabela regressiva do IR (180, 360 e 720 dias) e o IOF pesa nos primeiros 30 dias. O IR e o IOF só incidem sobre o rendimento.' }));
         // tabela (alternativa ao gráfico, para leitura e acessibilidade)
-        const dTab = [30, 90, 180, 360, 540, 720, 1080, 1440, 1800, 2520, 3600].filter((d) => d < itens[0].r.dias);
-        dTab.push(itens[0].r.dias);
+        const maxD = Math.max(...itens.map((it) => it.dias));
+        const dTab = [30, 90, 180, 360, 540, 720, 1080, 1440, 1800, 2520, 3600].filter((d) => d < maxD);
+        dTab.push(maxD);
         const trs = dTab.map((d) => h('tr', {}, h('td', { text: `${d} dias (${num((d * 12) / 365, 1)} m)` }), itens.map((it) => {
+          if (it.cart || d > it.dias) return h('td', { class: 'r' }, brl0.format(K.valorEm(it.pts, d)), h('small', { class: 'quiet', text: d > it.dias ? ' · vencido' : '' }));
           const rr = C.calcular({ ...it.P, meses: (d * 12) / 365 }, faixas);
           return h('td', { class: 'r' }, brl0.format(rr.final), h('small', { class: 'quiet', text: rr.isento ? ' · isento' : ` · IR ${num(rr.aliq, 1)}%${rr.iof > 0 ? ' + IOF' : ''}` }));
         })));
         parts.push(h('details', { class: 'eqd' }, h('summary', { text: 'Ver os valores em tabela' }), h('div', { class: 'tblw' }, h('table', { class: 'tbl' },
-          h('thead', {}, h('tr', {}, h('th', { text: 'Resgate em' }), itens.map((it) => h('th', { class: 'r', text: `${LETRAS[it.i]} · ${it.nome}` })))),
+          h('thead', {}, h('tr', {}, h('th', { text: 'Resgate em' }), itens.map((it) => h('th', { class: 'r', text: `${it.letra} · ${it.nome}` })))),
           h('tbody', {}, trs)))));
       }
 
@@ -722,10 +773,10 @@
     }
     function resumoTexto(itens) {
       const P = itens[0].P;
-      const linhas = ['Simulação de renda fixa (estimativa)', `Valor aplicado: ${brl2.format(P.valor)} por ${P.meses} meses (${itens[0].r.dias} dias)`, `Premissas: Selic ${st.selic}% | CDI ${st.cdi}% | IPCA ${st.ipca}% ao ano`, ''];
+      const linhas = ['Simulação de renda fixa (estimativa)', `Premissas: Selic ${st.selic}% | CDI ${st.cdi}% | IPCA ${st.ipca}% ao ano`, ''];
       for (const it of itens) {
         const { r } = it;
-        linhas.push(`${LETRAS[it.i]}) ${it.nome}`, `   Rendimento bruto: ${brl2.format(r.rendBruto)} | IR: ${r.isento ? 'isento' : brl2.format(r.ir)}${r.iof > 0 ? ` | IOF: ${brl2.format(r.iof)}` : ''}`, `   Rendimento líquido: ${brl2.format(r.rendLiq)} | Valor final líquido: ${brl2.format(r.final)}`, `   Juro real líquido: ${pc(r.jurosReaisAA)} a.a. | Ganho real: ${brl2.format(r.ganhoReal)} (em R$ de hoje)`);
+        linhas.push(`${it.letra}) ${it.nome}`, `   Aplicado: ${brl2.format(it.valor)} por ${it.cart ? num(it.P.meses, 1) : it.P.meses} meses`, `   Rendimento bruto: ${brl2.format(r.rendBruto)} | IR: ${r.isento ? 'isento' : brl2.format(r.ir)}${r.iof > 0 ? ` | IOF: ${brl2.format(r.iof)}` : ''}`, `   Rendimento líquido: ${brl2.format(r.rendLiq)} | Valor final líquido: ${brl2.format(r.final)}`, `   Juro real líquido: ${pc(r.jurosReaisAA)} a.a. | Ganho real: ${brl2.format(r.ganhoReal)} (em R$ de hoje)`);
       }
       linhas.push('', 'Simulação com premissas informadas; não é recomendação de investimento. Rentabilidade passada não garante resultados futuros.');
       return linhas.join('\n');
@@ -827,7 +878,7 @@
       const itens = [];
       st.cenarios.forEach((sc, i) => {
         if (!sc.inc) return;
-        const P = { ...paramsOf(sc), valor: parseNum(sc.cv), meses: parseNum(sc.cm) };
+        const P = paramsOf(sc);
         if (invalido(P)) { aviso.push(`${LETRAS[i]} (valor, prazo ou taxa sem número)`); return; }
         itens.push({ i, sc, P, nome: nomeCenario(C, sc), mod: sc.mod || K.modalidadeDe(sc.indexador) });
       });

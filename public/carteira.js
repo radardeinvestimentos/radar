@@ -35,12 +35,25 @@
   }
 
   /** Valor líquido da posição em d dias: interpola a série; depois do vencimento, fica parado (sem reinvestir). */
-  function valorEm(pts, d) {
+  function valorEm(pts, d, chave) {
+    const k = chave || 'liquido';
     const last = pts[pts.length - 1];
-    if (d >= last.dias) return last.liquido;
+    if (d >= last.dias) return last[k];
     let i = 1; while (i < pts.length && pts[i].dias < d) i++;
     const a = pts[i - 1], b = pts[i];
-    return b.dias === a.dias ? b.liquido : a.liquido + ((b.liquido - a.liquido) * (d - a.dias)) / (b.dias - a.dias);
+    return b.dias === a.dias ? b[k] : a[k] + ((b[k] - a[k]) * (d - a.dias)) / (b.dias - a.dias);
+  }
+  /** Reamostra séries de vários investimentos numa grade comum de dias e soma (valor parado após o vencimento). */
+  function somarSeries(lista, ipca, grade) {
+    const valor = lista.reduce((a, x) => a + x.valor, 0);
+    const set = new Set(grade || [0]);
+    if (!grade) for (const x of lista) for (const p of x.pts) set.add(p.dias);
+    const dias = [...set].sort((a, b) => a - b);
+    return dias.map((d) => {
+      let liq = 0, bru = 0;
+      for (const x of lista) { liq += valorEm(x.pts, d, 'liquido'); bru += valorEm(x.pts, d, 'bruto'); }
+      return { dias: d, meses: (d * 12) / 365, liquido: liq, bruto: bru, rentLiqPct: (liq / valor - 1) * 100, rentBrutaPct: (bru / valor - 1) * 100, inflacao: valor * Math.pow(1 + ipca / 100, d / 365) };
+    });
   }
   /** series: [{valor, grupo, pts:[{dias,liquido}]}] -> {dias, grupos:{g:[...]}, total, infl} */
   function agregar(series, ipca) {
@@ -59,7 +72,7 @@
     return { dias, grupos, total, infl, H };
   }
 
-  const api = { MODALIDADES, modalidadeDe, consolidar, agregar, valorEm };
+  const api = { MODALIDADES, modalidadeDe, consolidar, agregar, valorEm, somarSeries };
   root.RadarCarteira = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);
